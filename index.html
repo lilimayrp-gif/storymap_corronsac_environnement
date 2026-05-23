@@ -2,102 +2,122 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Storymap – Enjeux environnementaux de Corronsac</title>
-
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     * { box-sizing:border-box; }
-    body { margin:0; font-family:Arial, sans-serif; background:#f7f7f7; color:#222; }
+    body {
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:#f7f7f7;
+      color:#222;
+    }
     h1,h2,h3 { margin:0 0 10px; }
     p { line-height:1.5; }
 
-    .sm-nav {
-      position:fixed; top:0; left:0; right:0;
-      background:#ffffffee; border-bottom:1px solid #ddd;
-      display:flex; justify-content:center; gap:14px;
-      padding:10px 12px; z-index:1000; backdrop-filter:blur(6px);
+    .nav {
+      position:sticky;
+      top:0;
+      z-index:10;
+      background:#ffffffee;
+      backdrop-filter:blur(6px);
+      border-bottom:1px solid #ddd;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      padding:8px 12px;
+      justify-content:center;
     }
-    .sm-nav-btn {
-      cursor:pointer; padding:6px 12px; border-radius:999px;
-      font-size:14px; border:1px solid transparent;
-      transition:all .2s;
+    .nav a {
+      text-decoration:none;
+      font-size:14px;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid #ddd;
+      color:#333;
+      background:#fff;
     }
-    .sm-nav-btn:hover { background:#f0f0f0; }
-    .sm-nav-btn.active {
-      background:#e07b39; color:#fff; border-color:#e07b39;
+    .nav a:hover {
+      background:#e07b39;
+      color:#fff;
+      border-color:#e07b39;
     }
 
     .section {
-      display:none;
-      padding:80px 8% 40px;
-      max-width:1200px;
+      max-width:1100px;
       margin:0 auto;
+      padding:32px 16px 24px;
     }
-    .section.visible { display:block; }
-
     .divider {
-      width:60px; height:4px; border-radius:4px;
-      background:#e07b39; margin:16px 0 24px;
+      width:60px;
+      height:4px;
+      border-radius:4px;
+      background:#e07b39;
+      margin:12px 0 24px;
     }
-
     .two-cols {
-      display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);
-      gap:26px; align-items:flex-start;
+      display:grid;
+      grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);
+      gap:26px;
+      align-items:flex-start;
     }
     @media(max-width:900px){
       .two-cols { grid-template-columns:1fr; }
     }
-
-    #mapCorronsac {
-      width:100%; height:420px; border-radius:10px;
-      border:1px solid #ddd; margin-top:10px;
-    }
-
     .card {
-      background:#fff; border-radius:10px; padding:16px 18px;
-      box-shadow:0 2px 6px rgba(0,0,0,.06); margin-bottom:18px;
+      background:#fff;
+      border-radius:10px;
+      padding:16px 18px;
+      box-shadow:0 2px 6px rgba(0,0,0,.06);
+      margin-bottom:18px;
     }
     .kpi-grid {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
       gap:14px;
     }
     .kpi {
-      background:#fff; border-radius:10px; padding:12px 14px;
-      box-shadow:0 1px 4px rgba(0,0,0,.05); font-size:13px;
+      background:#fff;
+      border-radius:10px;
+      padding:12px 14px;
+      box-shadow:0 1px 4px rgba(0,0,0,.05);
+      font-size:13px;
     }
-    .kpi strong { display:block; font-size:22px; margin-bottom:4px; }
+    .kpi strong {
+      display:block;
+      font-size:20px;
+      margin-bottom:4px;
+    }
 
-    canvas { max-width:100%; }
+    ul { margin:6px 0 10px; padding-left:18px; }
+
     .foot {
-      text-align:center; padding:26px 0 30px;
-      color:#777; font-size:12px;
+      text-align:center;
+      padding:24px 0 30px;
+      font-size:12px;
+      color:#777;
     }
   </style>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
-<!-- NAV -->
-<div class="sm-nav">
-  <div class="sm-nav-btn active" onclick="showSection('intro')">Introduction</div>
-  <div class="sm-nav-btn" onclick="showSection('occsol')">Occupation du sol</div>
-  <div class="sm-nav-btn" onclick="showSection('risques')">Risques</div>
-  <div class="sm-nav-btn" onclick="showSection('biodiv')">Biodiversité / TVB</div>
-  <div class="sm-nav-btn" onclick="showSection('logement')">Logement</div>
-  <div class="sm-nav-btn" onclick="showSection('carbone')">Carbone</div>
-  <div class="sm-nav-btn" onclick="showSection('preco')">Préconisations</div>
-</div>
+<!-- NAVIGATION -->
+<nav class="nav">
+  <a href="#intro">Introduction</a>
+  <a href="#occsol">Occupation du sol</a>
+  <a href="#risques">Risques</a>
+  <a href="#biodiv">Biodiversité / TVB</a>
+  <a href="#logement">Logement</a>
+  <a href="#carbone">Carbone</a>
+  <a href="#preco">Préconisations</a>
+</nav>
 
-<!-- INTRO -->
-<div class="section visible" id="sec-intro">
+<!-- INTRODUCTION -->
+<section class="section" id="intro">
   <h1>Corronsac – Enjeux environnementaux territoriaux</h1>
   <div class="divider"></div>
+
   <div class="two-cols">
     <div>
       <p>
@@ -105,17 +125,18 @@
         occupation du sol, risques, continuités écologiques, logement et empreinte carbone.
       </p>
       <p>
-        Les indicateurs sont construits à partir des grandes bases nationales (Corine Land Cover, BD TOPO,
-        données risques, trames écologiques, bilans carbone) et adaptés à l’échelle communale.
+        Elle s’appuie sur les grandes bases nationales (Corine Land Cover, données de risques, trames écologiques,
+        bilans carbone) et sur une connaissance qualitative du territoire, afin d’éclairer les choix d’aménagement.
       </p>
+
       <div class="kpi-grid">
         <div class="kpi">
           <strong>≈ 1,9 km²</strong>
           Surface communale
         </div>
         <div class="kpi">
-          <strong>Commune</strong>
-          Périphérie toulousaine
+          <strong>Périphérie</strong>
+          Aire toulousaine
         </div>
         <div class="kpi">
           <strong>Enjeux</strong>
@@ -123,20 +144,21 @@
         </div>
       </div>
     </div>
+
     <div class="card">
       <h3>Questions clés</h3>
-      <ul style="padding-left:18px; margin:8px 0;">
-        <li>Comment l’urbanisation a-t-elle évolué depuis 2000 ?</li>
-        <li>Quels risques et contraintes pèsent sur le territoire ?</li>
-        <li>Comment préserver les continuités écologiques et les sols agricoles ?</li>
-        <li>Quelles trajectoires possibles pour un développement plus sobre ?</li>
+      <ul>
+        <li>Comment l’urbanisation a-t-elle évolué depuis 2000&nbsp;?</li>
+        <li>Quels risques et contraintes pèsent sur le territoire&nbsp;?</li>
+        <li>Comment préserver les continuités écologiques et les sols agricoles&nbsp;?</li>
+        <li>Quelles trajectoires possibles pour un développement plus sobre&nbsp;?</li>
       </ul>
     </div>
   </div>
-</div>
+</section>
 
 <!-- OCCUPATION DU SOL -->
-<div class="section" id="sec-occsol">
+<section class="section" id="occsol">
   <h2>Occupation du sol et artificialisation</h2>
   <div class="divider"></div>
 
@@ -147,56 +169,150 @@
         de surfaces urbanisées progresse régulièrement depuis le début des années 2000, sous l’effet de la
         pression résidentielle de l’aire toulousaine.
       </p>
-      <div id="mapCorronsac"></div>
-      <p style="font-size:12px; color:#666; margin-top:6px;">
-        Localisation simplifiée de la zone urbanisée de Corronsac (polygone indicatif).
+      <p>
+        La commune se caractérise par un village et des extensions pavillonnaires, insérés dans un paysage
+        de coteaux, de vallons et de terres agricoles. La maîtrise de cette dynamique est un enjeu central
+        pour limiter l’artificialisation des sols.
       </p>
+
+      <!-- CARTE STATIQUE STYLE ARCGIS -->
+      <div style="
+        background:#f2f2f2;
+        padding:20px;
+        border-radius:12px;
+        box-shadow:0 2px 6px rgba(0,0,0,0.15);
+        margin:20px 0;
+      ">
+        <h3 style="margin-top:0; font-size:20px; font-weight:600;">
+          Carte statique – Contour de Corronsac (style ArcGIS)
+        </h3>
+
+        <svg viewBox="0 0 300 300"
+             style="
+               width:100%;
+               border-radius:10px;
+               background:#e6e6e6;
+               box-shadow:inset 0 0 8px rgba(0,0,0,0.25);
+             ">
+
+          <!-- Ombre portée -->
+          <filter id="shadow">
+            <feDropShadow dx="2" dy="2" stdDeviation="3"
+                          flood-color="#000" flood-opacity="0.25"/>
+          </filter>
+
+          <!-- Contour stylisé de Corronsac (simplifié) -->
+          <polygon 
+            points="
+              150,40
+              200,80
+              230,130
+              220,180
+              180,230
+              120,240
+              80,200
+              60,150
+              80,100
+              120,60
+            "
+            fill="#ffb36b"
+            stroke="#d96a00"
+            stroke-width="4"
+            filter="url(#shadow)"
+          />
+
+          <!-- Lignes internes pour effet “couches” -->
+          <polyline 
+            points="
+              150,40 200,80 230,130 220,180 180,230
+            "
+            stroke="#ffffff55"
+            stroke-width="2"
+            fill="none"
+          />
+
+          <polyline 
+            points="
+              180,230 120,240 80,200 60,150
+            "
+            stroke="#ffffff55"
+            stroke-width="2"
+            fill="none"
+          />
+
+        </svg>
+
+        <p style="font-size:12px; color:#555; margin-top:8px;">
+          Représentation statique du contour communal de Corronsac, stylisée façon ArcGIS (fond gris, contour orange, ombrage).
+        </p>
+      </div>
     </div>
+
     <div>
       <div class="card">
-        <h3>Évolution de la surface urbanisée</h3>
-        <canvas id="chartOccSolEvo" height="180"></canvas>
+        <h3>Lecture synthétique de l’occupation du sol</h3>
+        <ul>
+          <li><strong>Espaces agricoles</strong> : majoritaires, structurent le paysage et les vues.</li>
+          <li><strong>Espaces urbanisés</strong> : village, extensions pavillonnaires, habitat diffus.</li>
+          <li><strong>Boisements et haies</strong> : présents sur les coteaux et en fond de vallon.</li>
+          <li><strong>Zones humides et fonds de vallons</strong> : éléments clés pour l’eau et la biodiversité.</li>
+        </ul>
       </div>
+
       <div class="card">
-        <h3>Structure de l’occupation du sol</h3>
-        <canvas id="chartOccSolStruct" height="200"></canvas>
+        <h3>Enjeux</h3>
+        <ul>
+          <li>Limiter l’extension pavillonnaire consommatrice de foncier.</li>
+          <li>Préserver les continuités agricoles et paysagères.</li>
+          <li>Favoriser la densification douce à proximité du village.</li>
+        </ul>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- RISQUES -->
-<div class="section" id="sec-risques">
+<section class="section" id="risques">
   <h2>Risques et vulnérabilités</h2>
   <div class="divider"></div>
 
   <div class="two-cols">
     <div>
       <p>
-        Corronsac est concernée par plusieurs types de risques : retrait-gonflement des argiles, mouvements
-        de terrain ponctuels, épisodes pluvieux intenses et ruissellement. La prise en compte de ces aléas
-        est déterminante pour l’urbanisation future et la gestion des eaux pluviales.
+        Corronsac est concernée par plusieurs types de risques : retrait-gonflement des argiles, ruissellement
+        pluvial, mouvements de terrain ponctuels. La prise en compte de ces aléas est déterminante pour
+        l’urbanisation future et la gestion des eaux pluviales.
       </p>
+      <p>
+        Les secteurs en pente, les fonds de vallons et les zones de sols argileux doivent faire l’objet
+        d’une attention particulière dans les projets (implantation des bâtiments, gestion des eaux, voiries).
+      </p>
+    </div>
+
+    <div>
       <div class="card">
-        <h3>Principaux aléas identifiés</h3>
-        <ul style="padding-left:18px; margin:8px 0;">
-          <li>Retrait-gonflement des argiles : aléa moyen à fort sur une partie du territoire</li>
-          <li>Ruissellement pluvial : enjeux sur les secteurs en pente et les fonds de vallons</li>
-          <li>Mouvements de terrain localisés : talus, berges, remblais</li>
+        <h3>Principaux aléas identifiés (lecture qualitative)</h3>
+        <ul>
+          <li><strong>Retrait-gonflement des argiles</strong> : aléa moyen à fort sur une partie du territoire.</li>
+          <li><strong>Ruissellement pluvial</strong> : enjeux sur les versants et les fonds de vallons.</li>
+          <li><strong>Mouvements de terrain localisés</strong> : talus, berges, remblais.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Traduction pour l’aménagement</h3>
+        <ul>
+          <li>Adapter l’urbanisation aux aléas (implantation, techniques constructives).</li>
+          <li>Intégrer la gestion des eaux pluviales dès la conception (infiltration, noues, etc.).</li>
+          <li>Éviter de densifier les secteurs les plus exposés sans mesures adaptées.</li>
         </ul>
       </div>
     </div>
-    <div>
-      <div class="card">
-        <h3>Indice synthétique d’exposition</h3>
-        <canvas id="chartRisques" height="210"></canvas>
-      </div>
-    </div>
   </div>
-</div>
+</section>
 
 <!-- BIODIVERSITE / TVB -->
-<div class="section" id="sec-biodiv">
+<section class="section" id="biodiv">
   <h2>Biodiversité, continuités écologiques et zones humides</h2>
   <div class="divider"></div>
 
@@ -212,17 +328,32 @@
         biodiversité. Leur préservation est un enjeu fort dans un contexte de changement climatique.
       </p>
     </div>
+
     <div>
       <div class="card">
-        <h3>Répartition des milieux à enjeu écologique</h3>
-        <canvas id="chartBiodiv" height="210"></canvas>
+        <h3>Éléments de trame verte et bleue</h3>
+        <ul>
+          <li>Haies bocagères et alignements d’arbres.</li>
+          <li>Boisements de coteaux et petits bosquets.</li>
+          <li>Vallons humides et réseaux de fossés.</li>
+          <li>Prairies et friches à forte valeur écologique.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Enjeux</h3>
+        <ul>
+          <li>Éviter les coupures de corridors écologiques par de nouvelles voiries ou lotissements.</li>
+          <li>Intégrer la TVB dans le zonage et les OAP du document d’urbanisme.</li>
+          <li>Encourager la restauration de haies et de zones humides dégradées.</li>
+        </ul>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- LOGEMENT -->
-<div class="section" id="sec-logement">
+<section class="section" id="logement">
   <h2>Logement et formes urbaines</h2>
   <div class="divider"></div>
 
@@ -234,38 +365,35 @@
         et renforce la dépendance à la voiture.
       </p>
       <p>
-        Les données issues du bâti (type BD TOPO) permettent d’identifier les secteurs déjà urbanisés,
+        Les données issues du bâti permettent d’identifier les secteurs déjà urbanisés,
         les extensions récentes et les marges de densification possibles à proximité du village.
       </p>
     </div>
+
     <div>
       <div class="card">
-        <h3>Structure du parc de logements</h3>
-        <canvas id="chartLogement" height="210"></canvas>
+        <h3>Lecture qualitative du parc de logements</h3>
+        <ul>
+          <li>Majorité de maisons individuelles sur parcelles relativement grandes.</li>
+          <li>Peu de logements collectifs ou intermédiaires.</li>
+          <li>Urbanisation en “tâches d’huile” autour du village.</li>
+        </ul>
       </div>
+
       <div class="card">
-        <h3>Indicateurs synthétiques</h3>
-        <div class="kpi-grid">
-          <div class="kpi">
-            <strong>≈ 85 %</strong>
-            Maisons individuelles
-          </div>
-          <div class="kpi">
-            <strong>Faible</strong>
-            Densité bâtie
-          </div>
-          <div class="kpi">
-            <strong>Fort</strong>
-            Usage de la voiture
-          </div>
-        </div>
+        <h3>Enjeux</h3>
+        <ul>
+          <li>Limiter la consommation de foncier agricole et naturel.</li>
+          <li>Favoriser la densification douce (division parcellaire, petits ensembles).</li>
+          <li>Renforcer la proximité des services et des centralités.</li>
+        </ul>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- CARBONE -->
-<div class="section" id="sec-carbone">
+<section class="section" id="carbone">
   <h2>Empreinte carbone territoriale (ordre de grandeur)</h2>
   <div class="divider"></div>
 
@@ -277,203 +405,76 @@
         et la dépendance à la voiture expliquent une part importante des émissions par habitant.
       </p>
       <p>
-        Les ordres de grandeur ci-dessous s’inspirent des bilans carbone types pour des communes périurbaines
-        de taille comparable, en distinguant les principaux postes d’émissions.
+        Les ordres de grandeur issus des bilans carbone de communes périurbaines comparables montrent
+        généralement une forte contribution des transports, suivis du résidentiel.
       </p>
     </div>
+
     <div>
       <div class="card">
-        <h3>Répartition indicative des émissions</h3>
-        <canvas id="chartCarbone" height="220"></canvas>
+        <h3>Principaux postes d’émissions (lecture qualitative)</h3>
+        <ul>
+          <li><strong>Transports</strong> : navettes domicile-travail, déplacements du quotidien.</li>
+          <li><strong>Résidentiel</strong> : chauffage, eau chaude, usages électriques.</li>
+          <li><strong>Tertiaire / services</strong> : équipements, commerces, services publics.</li>
+          <li><strong>Agriculture</strong> : émissions liées aux pratiques agricoles.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Leviers d’action</h3>
+        <ul>
+          <li>Réduire les distances et besoins de déplacements (urbanisme, services).</li>
+          <li>Améliorer la performance énergétique du parc de logements.</li>
+          <li>Favoriser les mobilités alternatives (covoiturage, transports collectifs, vélo).</li>
+        </ul>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- PRECONISATIONS -->
-<div class="section" id="sec-preco">
+<section class="section" id="preco">
   <h2>Préconisations stratégiques</h2>
   <div class="divider"></div>
 
   <div class="two-cols">
     <div>
       <h3>1. Maîtriser l’artificialisation</h3>
-      <ul style="padding-left:18px; margin:8px 0 18px;">
+      <ul>
         <li>Limiter les extensions pavillonnaires en périphérie immédiate des espaces agricoles.</li>
         <li>Concentrer l’urbanisation autour du village et des secteurs déjà équipés.</li>
         <li>Favoriser la densification douce (division parcellaire, petits collectifs intégrés).</li>
       </ul>
 
       <h3>2. Préserver les continuités écologiques</h3>
-      <ul style="padding-left:18px; margin:8px 0 18px;">
+      <ul>
         <li>Identifier et sanctuariser les haies structurantes et boisements de coteaux.</li>
         <li>Éviter les coupures de corridors écologiques par de nouvelles voiries.</li>
         <li>Intégrer la TVB dans les documents d’urbanisme (OAP, zonage, règlement).</li>
       </ul>
     </div>
+
     <div>
       <h3>3. Réduire les vulnérabilités et les émissions</h3>
-      <ul style="padding-left:18px; margin:8px 0 18px;">
+      <ul>
         <li>Adapter l’urbanisation aux aléas (argiles, ruissellement) : implantation, gestion des eaux.</li>
         <li>Encourager la rénovation énergétique du parc existant.</li>
         <li>Développer les mobilités alternatives : covoiturage, rabattement vers les pôles de transport.</li>
       </ul>
 
       <h3>4. Construire un récit territorial</h3>
-      <ul style="padding-left:18px; margin:8px 0;">
+      <ul>
         <li>Faire de Corronsac un territoire de sobriété foncière et de qualité paysagère.</li>
         <li>Associer habitants et agriculteurs à la définition des trajectoires futures.</li>
       </ul>
     </div>
   </div>
-</div>
+</section>
 
-<!-- NAV SCRIPT -->
-<script>
-function showSection(section) {
-  document.querySelectorAll('.section').forEach(sec => sec.classList.remove('visible'));
-  document.getElementById('sec-' + section).classList.add('visible');
-
-  document.querySelectorAll('.sm-nav-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelectorAll('.sm-nav-btn').forEach(btn => {
-    const txt = btn.textContent.toLowerCase();
-    if (txt.includes(section) ||
-        (section === 'intro' && txt.includes('intro')) ||
-        (section === 'biodiv' && txt.includes('biodiversité'))) {
-      btn.classList.add('active');
-    }
-  });
-
-  if (section === 'occsol') {
-    setTimeout(() => { map.invalidateSize(); }, 200);
-  }
-}
-</script>
-
-<!-- LEAFLET MAP -->
-<script>
-const map = L.map('mapCorronsac').setView([43.495, 1.533], 13);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '© OpenStreetMap'
-}).addTo(map);
-
-// Polygone simplifié autour de Corronsac (indicatif)
-const zoneUrbanisee = L.polygon([
-  [43.497, 1.528],
-  [43.493, 1.532],
-  [43.496, 1.538]
-], { color: 'orange', weight:2, fillOpacity:0.25 }).addTo(map);
-
-zoneUrbanisee.bindPopup("Secteur urbanisé principal de Corronsac (géométrie simplifiée).");
-</script>
-
-<!-- CHARTS -->
-<script>
-// Évolution surface urbanisée (ordre de grandeur)
-new Chart(document.getElementById('chartOccSolEvo'), {
-  type: 'line',
-  data: {
-    labels: ['2000','2010','2020'],
-    datasets: [{
-      label: 'Surface urbanisée (indice)',
-      data: [45, 58, 72],
-      borderColor: '#e07b39',
-      backgroundColor: 'rgba(224,123,57,0.15)',
-      tension:0.25,
-      fill:true
-    }]
-  },
-  options: {
-    plugins:{ legend:{ display:false } },
-    scales:{ y:{ beginAtZero:true } }
-  }
-});
-
-// Structure occupation du sol (CLC simplifiée)
-new Chart(document.getElementById('chartOccSolStruct'), {
-  type: 'doughnut',
-  data: {
-    labels: ['Agricole','Urbanisé','Boisements / milieux naturels','Autres'],
-    datasets: [{
-      data: [55, 20, 20, 5],
-      backgroundColor: ['#c9d86a','#e07b39','#5c8a57','#b0b0b0']
-    }]
-  },
-  options: {
-    plugins:{ legend:{ position:'bottom' } }
-  }
-});
-
-// Risques – indice synthétique
-new Chart(document.getElementById('chartRisques'), {
-  type: 'bar',
-  data: {
-    labels: ['Argiles','Ruissellement','Mouvements de terrain','Inondation'],
-    datasets: [{
-      label: 'Niveau relatif d’exposition',
-      data: [4, 3, 2, 1],
-      backgroundColor: '#c94f4f'
-    }]
-  },
-  options: {
-    plugins:{ legend:{ display:false } },
-    scales:{ y:{ beginAtZero:true, ticks:{ stepSize:1, max:5 } } }
-  }
-});
-
-// Biodiversité / milieux à enjeu
-new Chart(document.getElementById('chartBiodiv'), {
-  type: 'polarArea',
-  data: {
-    labels: ['Haies / bocage','Boisements','Vallons humides','Prairies'],
-    datasets: [{
-      data: [35, 30, 15, 20],
-      backgroundColor: ['#4c8c4a','#2e5f2e','#6aa6b8','#9ac27b']
-    }]
-  },
-  options: {
-    plugins:{ legend:{ position:'bottom' } }
-  }
-});
-
-// Logement
-new Chart(document.getElementById('chartLogement'), {
-  type: 'pie',
-  data: {
-    labels: ['Maisons individuelles','Logements collectifs'],
-    datasets: [{
-      data: [85, 15],
-      backgroundColor: ['#e07b39','#4f81bd']
-    }]
-  },
-  options: {
-    plugins:{ legend:{ position:'bottom' } }
-  }
-});
-
-// Carbone – répartition indicative
-new Chart(document.getElementById('chartCarbone'), {
-  type: 'bar',
-  data: {
-    labels: ['Transports','Résidentiel','Tertiaire / services','Agriculture'],
-    datasets: [{
-      label: 'Part des émissions (indice)',
-      data: [45, 30, 15, 10],
-      backgroundColor: ['#c0504d','#4f81bd','#9bbb59','#8064a2']
-    }]
-  },
-  options: {
-    plugins:{ legend:{ display:false } },
-    scales:{ y:{ beginAtZero:true } }
-  }
-});
-</script>
-
-<div class="foot">
-  © 2024 – Storymap Corronsac – Enjeux environnementaux (version synthétique, code corrigé)
-</div>
+<footer class="foot">
+  © 2024 – Storymap Corronsac – Enjeux environnementaux (version statique, carte style ArcGIS)
+</footer>
 
 </body>
 </html>
