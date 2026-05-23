@@ -1,676 +1,248 @@
 <!DOCTYPE html>
 <html lang="fr">
-
-
 <head>
   <meta charset="UTF-8">
-  <title>Storymap Corronsac – Enjeux environnementaux</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storymap – Enjeux environnementaux de Corronsac</title>
 
+  <!-- Feuilles de style -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
-    :root {
-      --c-danger:#dc2626;
-      --c-warn:#f59e0b;
-      --c-forest:#2d6a4f;
-      --c-sky:#4ea8de;
-      --c-muted:#6b7280;
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: #f7f7f7;
+      color: #222;
     }
-    /* ... tout ton CSS ... */
+
+    .section {
+      display: none;
+      padding: 40px 8%;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .section.visible {
+      display: block;
+    }
+
+    h1, h2 {
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .divider {
+      width: 60px;
+      height: 4px;
+      background: #e07b39;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    /* Navigation */
+    .sm-nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #ffffffee;
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 12px 0;
+      z-index: 1000;
+    }
+    .sm-nav-btn {
+      cursor: pointer;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+    .sm-nav-btn:hover {
+      background: #eee;
+    }
+    .sm-nav-btn.active {
+      background: #e07b39;
+      color: white;
+    }
+
+    /* Carte */
+    #mapOccSol {
+      width: 100%;
+      height: 420px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    /* Préconisations */
+    .preconisation {
+      display: flex;
+      align-items: flex-start;
+      margin: 18px 0;
+    }
+    .prec-num {
+      width: 36px;
+      height: 36px;
+      background: #e07b39;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin-right: 14px;
+    }
+
+    .footer-sm {
+      text-align: center;
+      padding: 30px 0;
+      font-size: 13px;
+      color: #666;
+    }
   </style>
 
-  <!-- Leaflet (correct) -->
- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
+<body>
 
-<!-- ============================
-     NAVIGATION PRINCIPALE
-============================= -->
-<nav class="sm-nav">
-  <button class="sm-nav-btn active" onclick="showSection('occupation')">Occupation du sol</button>
-  <button class="sm-nav-btn" onclick="showSection('risques')">Risques</button>
-  <button class="sm-nav-btn" onclick="showSection('dashboard')">Dashboard</button>
-  <button class="sm-nav-btn" onclick="showSection('scenarios')">Scénarios</button>
-  <button class="sm-nav-btn" onclick="showSection('preco')">Préconisations</button>
-</nav>
+<!-- NAVIGATION -->
+<div class="sm-nav">
+  <div class="sm-nav-btn active" onclick="showSection('intro')">Introduction</div>
+  <div class="sm-nav-btn" onclick="showSection('occsol')">Occupation du sol</div>
+  <div class="sm-nav-btn" onclick="showSection('risques')">Risques</div>
+  <div class="sm-nav-btn" onclick="showSection('dashboard')">Dashboard</div>
+  <div class="sm-nav-btn" onclick="showSection('scenarios')">Scénarios</div>
+  <div class="sm-nav-btn" onclick="showSection('preco')">Préconisations</div>
+</div>
 
-<!-- ============================
-     DÉBUT DES SECTIONS
-============================= -->
-
-<!-- SECTION OCCUPATION DU SOL -->
-<div class="section visible" id="sec-occupation">
-  <div class="section-label">Analyse de l'occupation du sol</div>
-  <h2>Mutations spatiales du territoire</h2>
+<!-- SECTION INTRO -->
+<div class="section visible" id="sec-intro">
+  <h1>Corronsac – Enjeux environnementaux</h1>
   <div class="divider"></div>
-
-  <p class="lead">Entre 2000 et 2020, Corronsac a perdu 142 hectares de terres agricoles et naturelles au profit de l'urbanisation.</p>
-
-  <div class="chart-wrap" style="height:260px">
-    <canvas id="chartOccSol"></canvas>
-  </div>
-
-  <div class="legend-row" style="justify-content:center">
-    <span class="leg-item"><span class="leg-dot" style="background:#c9a87c"></span>Terres agricoles</span>
-    <span class="leg-item"><span class="leg-dot" style="background:#52b788"></span>Espaces naturels</span>
-    <span class="leg-item"><span class="leg-dot" style="background:#e07b39"></span>Tissu urbain</span>
-    <span class="leg-item"><span class="leg-dot" style="background:#888780"></span>Voiries/imperméabilisé</span>
-  </div>
-
-  <div class="card-grid" style="margin-top:1.5rem">
-    <div class="stat-card danger"><div class="lbl">Terres agricoles perdues</div><div class="val">-142 ha</div><div class="trend" style="color:var(--c-danger)">-14% en 20 ans</div></div>
-    <div class="stat-card danger"><div class="lbl">Espaces naturels perdus</div><div class="val">-38 ha</div><div class="trend" style="color:var(--c-danger)">-18% en 20 ans</div></div>
-    <div class="stat-card warn"><div class="lbl">Surface urbanisée nette</div><div class="val">+180 ha</div><div class="trend" style="color:var(--c-warn)">+9 ha/an en moy.</div></div>
-    <div class="stat-card sky"><div class="lbl">Taux imperméabilisation</div><div class="val">23%</div><div class="trend">Contre 14% en 2000</div></div>
-  </div>
-
- <div class="map-block">
-  <div class="map-header">
-    <span class="map-title">Évolution de l'artificialisation (2000–2020)</span>
-    <span class="map-year">Source : Corine Land Cover / IGN-BDTOPO</span>
-  </div>
-
-  <div id="mapOccSol" style="width:100%;height:350px;border-radius:8px;overflow:hidden;"></div>
-</div>
-
-    <div class="map-area">
-      <!-- ============================
-           SVG OCCUPATION DU SOL
-      ============================= -->
-     <div id="mapOccSol" style="width:100%;height:350px;border-radius:8px;overflow:hidden;"></div>
-
-        <rect width="540" height="320" fill="#f5f0e8" rx="4"/>
-        <rect width="540" height="320" fill="#e8dcc8" rx="4"/>
-
-        <!-- Zones naturelles -->
-        <path d="M10,150 Q50,130 90,155 Q120,170 145,150 L145,240 Q100,255 60,240 Q30,235 10,225 Z"
-              fill="#52b788" opacity=".5"/>
-
-        <!-- Tissu urbain 2000 -->
-        <rect x="210" y="100" width="75" height="65" rx="5" fill="#d4b896" opacity=".8"/>
-        <text x="248" y="133" text-anchor="middle" font-size="8" fill="#5c3d1e" font-weight="600">Centre 2000</text>
-
-        <!-- Urbanisation 2000-2010 -->
-        <rect x="210" y="50" width="95" height="48" rx="4" fill="#d97706" opacity=".55"/>
-        <text x="258" y="78" text-anchor="middle" font-size="8" fill="#fff" font-weight="600">Extension 2000-10</text>
-
-        <!-- Urbanisation 2010-2020 -->
-        <rect x="285" y="100" width="85" height="58" rx="4" fill="#dc2626" opacity=".5"/>
-        <text x="328" y="133" text-anchor="middle" font-size="8" fill="#fff" font-weight="600">Extension 2010-20</text>
-
-        <!-- Zone humide -->
-        <ellipse cx="340" cy="220" rx="50" ry="28" fill="#93c5fd" opacity=".5"
-                 stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
-        <text x="340" y="215" text-anchor="middle" font-size="8" fill="#1d4ed8" font-weight="600">Zone humide</text>
-        <text x="340" y="226" text-anchor="middle" font-size="8" fill="#1d4ed8">⚠ menacée</text>
-
-        <!-- Terres à risque -->
-        <rect x="380" y="50" width="140" height="180" rx="4"
-              fill="none" stroke="#dc2626" stroke-width="1" stroke-dasharray="6,4" opacity=".5"/>
-        <text x="450" y="145" text-anchor="middle" font-size="8" fill="#991b1b">Terres agri.</text>
-        <text x="450" y="157" text-anchor="middle" font-size="8" fill="#991b1b">à risque</text>
-
-        <!-- Cours d'eau -->
-        <path d="M150,280 Q200,260 260,270 Q310,278 360,262 Q410,248 480,255"
-              stroke="#4ea8de" stroke-width="3" fill="none"/>
-
-        <!-- Pressions -->
-        <path d="M500,130 L420,160" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-        <path d="M490,80 L390,90" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-
-        <defs>
-          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L8,3 Z" fill="#dc2626"/>
-          </marker>
-        </defs>
-
-        <text x="480" y="120" font-size="8" fill="#dc2626" font-weight="600">Pression</text>
-        <text x="480" y="131" font-size="8" fill="#dc2626">urbaine</text>
-
-        <!-- Légende -->
-        <rect x="10" y="255" width="155" height="60" rx="4" fill="rgba(255,255,255,.9)"/>
-        <rect x="18" y="263" width="10" height="10" rx="2" fill="#d4b896"/>
-        <text x="33" y="272" font-size="8">Tissu urbain 2000</text>
-
-        <rect x="18" y="278" width="10" height="10" rx="2" fill="#d97706" opacity=".7"/>
-        <text x="33" y="287" font-size="8">Urbanisation 2000-2010</text>
-
-        <rect x="18" y="293" width="10" height="10" rx="2" fill="#dc2626" opacity=".6"/>
-        <text x="33" y="302" font-size="8">Urbanisation 2010-2020</text>
-      </svg>
-    </div>
-  </div>
-
-  <div class="analysis-box warn">
-    <p>La lecture diachronique de l'occupation du sol révèle un phénomène de <strong>"consommation annulaire"</strong> : l'urbanisation progresse de manière concentrique depuis le bourg historique, grignotant d'abord les terres les plus proches, puis se déportant vers des secteurs de plus en plus éloignés et écologiquement sensibles.</p>
-  </div>
-</div>
-<div class="map-block">
-  <div class="map-header">
-    <span class="map-title">Évolution de l'artificialisation (2000–2020)</span>
-    <span class="map-year">Source : Corine Land Cover / IGN-BDTOPO</span>
-  </div>
-
-  <div id="mapOccSol" style="width:100%;height:350px;border-radius:8px;overflow:hidden;"></div>
-</div>
-
-
-<!-- ============================
-     SECTION RISQUES
-============================= -->
-<div class="section" id="sec-risques">
-
-  <div class="section-label">Analyse environnementale</div>
-  <h2>Risques et pressions environnementales</h2>
-  <div class="divider"></div>
-
-  <p class="lead">L'urbanisation génère une cascade de pressions sur les écosystèmes locaux : fragmentation des habitats, imperméabilisation, dégradation des cours d'eau, émissions de GES.</p>
-
-  <h3>Indicateurs de pression</h3>
-
-  <div class="pression-bar">
-    <div class="pb-row"><span class="pb-label">Imperméabilisation</span><div class="pb-track"><div class="pb-fill" style="width:75%;background:#dc2626"></div></div><span class="pb-val">75%</span></div>
-    <div class="pb-row"><span class="pb-label">Fragmentation haies</span><div class="pb-track"><div class="pb-fill" style="width:62%;background:#f59e0b"></div></div><span class="pb-val">62%</span></div>
-    <div class="pb-row"><span class="pb-label">Pression zones humides</span><div class="pb-track"><div class="pb-fill" style="width:58%;background:#dc2626"></div></div><span class="pb-val">58%</span></div>
-  </div>
-
-  <h3>Matrice de risque</h3>
-
-  <div class="risk-matrix">
-    <div class="risk-cell high"><div class="rt">Inondations</div>Crues éclair du Saudrune.</div>
-    <div class="risk-cell high"><div class="rt">Érosion biodiversité</div>Perte d'habitats sensibles.</div>
-    <div class="risk-cell med"><div class="rt">Qualité des eaux</div>Pollutions diffuses.</div>
-    <div class="risk-cell med"><div class="rt">CO₂ mobilité</div>Dépendance voiture.</div>
-  </div>
-
-  <div class="map-block">
-    <div class="map-header">
-      <span class="map-title">Trame verte et bleue</span>
-      <span class="map-year">Source : SRCE Occitanie</span>
-    </div>
-
-    <!-- ============================
-         SVG TRAME VERTE & BLEUE
-    ============================= -->
-    <svg viewBox="0 0 540 300" width="100%" style="max-width:540px">
-      <rect width="540" height="300" fill="#f0f4ec" rx="4"/>
-
-      <!-- Réservoirs -->
-      <ellipse cx="80" cy="100" rx="55" ry="40" fill="#2d6a4f" opacity=".3"/>
-      <ellipse cx="460" cy="80" rx="45" ry="35" fill="#2d6a4f" opacity=".3"/>
-      <ellipse cx="80" cy="240" rx="55" ry="35" fill="#2d6a4f" opacity=".3"/>
-      <ellipse cx="460" cy="240" rx="50" ry="35" fill="#2d6a4f" opacity=".3"/>
-
-      <!-- Corridors -->
-      <path d="M130,100 Q200,90 260,95 Q310,100 415,80"
-            stroke="#52b788" stroke-width="12" opacity=".3" fill="none"/>
-
-      <path d="M415,80 Q430,150 415,240"
-            stroke="#f59e0b" stroke-width="8" opacity=".35" stroke-dasharray="12,6" fill="none"/>
-
-      <!-- Trame bleue -->
-      <path d="M50,170 Q150,155 260,165 Q360,175 500,160"
-            stroke="#4ea8de" stroke-width="5" opacity=".7" fill="none"/>
-    </svg>
-  </div>
-
-  <div class="analysis-box danger">
-    <p>La fragmentation des corridors écologiques isole les réservoirs de biodiversité et augmente la vulnérabilité des espèces.</p>
-  </div>
+  <p>Analyse territoriale, trajectoires d’urbanisation, risques, biodiversité et recommandations stratégiques.</p>
 </div>
 
 <!-- ============================
-     SECTION DASHBOARD
+     SCRIPTS – NAVIGATION
 ============================= -->
-<div class="section" id="sec-dashboard">
+<script>
+function showSection(section) {
+  document.querySelectorAll('.section').forEach(sec => sec.classList.remove('visible'));
+  document.querySelectorAll('.sm-nav-btn').forEach(btn => btn.classList.remove('active'));
 
-  <div class="section-label">Tableau de bord</div>
-  <h2>Dashboard territorial</h2>
-  <div class="divider"></div>
+  document.getElementById('sec-' + section).classList.add('visible');
 
-  <p class="lead">Synthèse des indicateurs clés de développement durable.</p>
-
-  <div class="card-grid">
-    <div class="stat-card danger"><div class="lbl">Artificialisation annuelle</div><div class="val">+9 ha</div></div>
-    <div class="stat-card warn"><div class="lbl">Part voiture</div><div class="val">87%</div></div>
-    <div class="stat-card forest"><div class="lbl">SAU préservée</div><div class="val">862 ha</div></div>
-    <div class="stat-card sky"><div class="lbl">Indice biodiversité</div><div class="val">38/100</div></div>
-  </div>
-
-  <div class="dashboard-grid" style="margin-top:1rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-    <div>
-      <h3 style="font-size:.9rem;color:var(--c-muted)">Bilan carbone</h3>
-      <div class="chart-wrap" style="height:180px">
-        <canvas id="chartCarbone"></canvas>
-      </div>
-    </div>
-
-    <div>
-      <h3 style="font-size:.9rem;color:var(--c-muted)">Logements</h3>
-      <div class="chart-wrap" style="height:180px">
-        <canvas id="chartLogement"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <h3>Trajectoire ZAN</h3>
-  <div class="chart-wrap" style="height:220px">
-    <canvas id="chartZAN"></canvas>
-  </div>
-
-  <h3>Profil de durabilité</h3>
-  <div class="chart-wrap" style="height:240px">
-    <canvas id="chartRadar"></canvas>
-  </div>
-</div>
+  document.querySelectorAll('.sm-nav-btn').forEach(btn => {
+    if (btn.textContent.toLowerCase().includes(section)) {
+      btn.classList.add('active');
+    }
+  });
+}
+</script>
 
 <!-- ============================
-     SECTION SCÉNARIOS
+     LEAFLET – CARTE OCCUPATION DU SOL
 ============================= -->
-<div class="section" id="sec-scenarios">
+<script>
+const map = L.map('mapOccSol').setView([43.495, 1.533], 13);
 
-  <div class="section-label">Prospective territoriale</div>
-  <h2>Scénarios d'évolution à 2040</h2>
-  <div class="divider"></div>
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '© OpenStreetMap'
+}).addTo(map);
 
-  <p class="lead">Trois trajectoires possibles pour Corronsac.</p>
+// Exemple de polygone (à remplacer par tes données)
+const zone = L.polygon([
+  [43.497, 1.528],
+  [43.493, 1.532],
+  [43.496, 1.538]
+], { color: 'orange' }).addTo(map);
 
-  <div class="scenario-tabs">
-    <button class="sc-btn active" onclick="showScenario('fil')">Fil de l'eau</button>
-    <button class="sc-btn" onclick="showScenario('dense')">Densification</button>
-    <button class="sc-btn" onclick="showScenario('zan')">ZAN territorial</button>
-  </div>
-
-  <div class="scenario-content visible" id="sc-fil">
-    <strong style="color:#dc2626">⚠ Scénario tendanciel</strong>
-    <p>Urbanisation continue, pression sur les terres agricoles, risques accrus.</p>
-  </div>
-
-  <div class="scenario-content" id="sc-dense">
-    <strong style="color:#2d6a4f">Scénario densification maîtrisée</strong>
-    <p>Optimisation du bourg, limitation de l'étalement.</p>
-  </div>
-
-  <div class="scenario-content" id="sc-zan">
-    <strong style="color:#2d6a4f">Scénario ZAN</strong>
-    <p>Objectif zéro artificialisation nette, renaturation, corridors écologiques restaurés.</p>
-  </div>
-</div>
+zone.bindPopup("Zone d'évolution de l'urbanisation");
+</script>
 
 <!-- ============================
-     SECTION PRÉCONISATIONS
+     CHART.JS – GRAPHIQUES
 ============================= -->
-<div class="section" id="sec-preco">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <div class="section-label">Préconisations</div>
-  <h2>Recommandations stratégiques</h2>
-  <div class="divider"></div>
+<script>
+// Occupation du sol
+new Chart(document.getElementById('chartOccSol'), {
+  type: 'bar',
+  data: {
+    labels: ['2000', '2010', '2020'],
+    datasets: [{
+      label: 'Surface urbanisée (ha)',
+      data: [45, 58, 72],
+      backgroundColor: '#e07b39'
+    }]
+  }
+});
 
-  <div class="preconisation">
-    <div class="prec-num">1</div>
-    <div class="prec-text"><strong>Révision du PLU</strong><br>Reclasser les zones 2AU en zones agricoles ou naturelles.</div>
-  </div>
+// Carbone
+new Chart(document.getElementById('chartCarbone'), {
+  type: 'line',
+  data: {
+    labels: ['2010', '2015', '2020'],
+    datasets: [{
+      label: 'Émissions (tCO2/hab)',
+      data: [6.2, 5.4, 4.9],
+      borderColor: '#e07b39',
+      fill: false
+    }]
+  }
+});
 
-  <div class="preconisation">
-    <div class="prec-num">2</div>
-    <div class="prec-text"><strong>Densification douce</strong><br>Créer 50 à 80 logements sans consommer de nouvelles terres.</div>
-  </div>
+// Logement
+new Chart(document.getElementById('chartLogement'), {
+  type: 'pie',
+  data: {
+    labels: ['Maisons', 'Appartements'],
+    datasets: [{
+      data: [82, 18],
+      backgroundColor: ['#e07b39', '#555']
+    }]
+  }
+});
 
-  <div class="preconisation">
-    <div class="prec-num">3</div>
-    <div class="prec-text"><strong>Restauration des corridors</strong><br>Planter 8 km de haies, créer des passages à faune.</div>
-  </div>
+// ZAN
+new Chart(document.getElementById('chartZAN'), {
+  type: 'bar',
+  data: {
+    labels: ['2010', '2020', '2030', '2040'],
+    datasets: [{
+      label: 'Artificialisation cumulée (ha)',
+      data: [40, 55, 60, 62],
+      backgroundColor: '#e07b39'
+    }]
+  }
+});
 
-  <div class="preconisation">
-    <div class="prec-num">4</div>
-    <div class="prec-text"><strong>Mobilité décarbonée</strong><br>Navette, voie verte, extension bus.</div>
-  </div>
-
-  <div class="preconisation">
-    <div class="prec-num">5</div>
-    <div class="prec-text"><strong>Projet alimentaire territorial</strong><br>Soutenir l'installation de nouveaux agriculteurs.</div>
-  </div>
-
-  <div class>
-  </div> <!-- fin section préconisations -->
+// Radar
+new Chart(document.getElementById('chartRadar'), {
+  type: 'radar',
+  data: {
+    labels: ['Biodiversité', 'Eau', 'Agriculture', 'Mobilité', 'Risques'],
+    datasets: [{
+      label: 'Niveau d’enjeu',
+      data: [4, 3, 5, 2, 4],
+      backgroundColor: 'rgba(224,123,57,0.3)',
+      borderColor: '#e07b39'
+    }]
+  }
+});
+</script>
 
 <!-- ============================
      FOOTER
 ============================= -->
 <div class="footer-sm">
-  <p>Sources : INSEE · Corine Land Cover · IGN BD Topo · PLU Corronsac · SCoT GAT · SRCE Occitanie · DREAL · Agence de l'eau · Géoportail</p>
+  © 2024 – Storymap Corronsac – Analyse environnementale
 </div>
 
-<!-- ============================
-     SCRIPTS
-============================= -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-
-<script>
-  /* -----------------------------
-   CARTE INTERACTIVE OCCUPATION DU SOL
-   Style ArcGIS Pro (fond gris)
------------------------------ */
-
-// Création de la carte
-const map = L.map('mapOccSol', {
-  zoomControl: true,
-  attributionControl: true
-}).setView([43.51, 1.53], 13); // centre approximatif Corronsac
-
-// Fond type ArcGIS Light Gray
-L.tileLayer(
-  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-  {
-    attribution: '© Esri, HERE, Garmin, OpenStreetMap contributors',
-    maxZoom: 19
-  }
-).addTo(map);
-
-// --- Couches simplifiées (géométrie illustrative) ---
-
-// Urbanisation 2000
-L.polygon([
-  [43.512, 1.525],
-  [43.512, 1.535],
-  [43.507, 1.535],
-  [43.507, 1.525]
-], {
-  color: '#b08968',
-  weight: 1,
-  fillColor: '#d4b896',
-  fillOpacity: 0.7
-}).bindPopup('<strong>Tissu urbain 2000</strong>').addTo(map);
-
-// Urbanisation 2000–2010
-L.polygon([
-  [43.515, 1.525],
-  [43.515, 1.54],
-  [43.51, 1.54],
-  [43.51, 1.525]
-], {
-  color: '#c05621',
-  weight: 1,
-  fillColor: '#d97706',
-  fillOpacity: 0.55
-}).bindPopup('<strong>Urbanisation 2000–2010</strong>').addTo(map);
-
-// Urbanisation 2010–2020
-L.polygon([
-  [43.512, 1.535],
-  [43.512, 1.55],
-  [43.507, 1.55],
-  [43.507, 1.535]
-], {
-  color: '#b91c1c',
-  weight: 1,
-  fillColor: '#dc2626',
-  fillOpacity: 0.5
-}).bindPopup('<strong>Urbanisation 2010–2020</strong>').addTo(map);
-
-// Zone humide
-L.circle([43.505, 1.545], {
-  radius: 250,
-  color: '#2563eb',
-  weight: 2,
-  dashArray: '4,3',
-  fillColor: '#93c5fd',
-  fillOpacity: 0.4
-}).bindPopup('<strong>Zone humide</strong><br>⚠ Menacée').addTo(map);
-
-// Terres agricoles à risque
-L.rectangle([
-  [43.518, 1.54],
-  [43.503, 1.56]
-], {
-  color: '#dc2626',
-  weight: 1,
-  dashArray: '6,4',
-  fillOpacity: 0
-}).bindPopup('<strong>Terres agricoles à risque</strong>').addTo(map);
-
-// Cours d’eau
-L.polyline([
-  [43.502, 1.52],
-  [43.505, 1.53],
-  [43.508, 1.54],
-  [43.51, 1.55],
-  [43.513, 1.56]
-], {
-  color: '#4ea8de',
-  weight: 3
-}).bindPopup('<strong>Saudrune</strong>').addTo(map);
-
-// Légende
-const legend = L.control({ position: 'bottomright' });
-legend.onAdd = function () {
-  const div = L.DomUtil.create('div', 'info legend');
-  div.style.background = 'rgba(255,255,255,0.9)';
-  div.style.padding = '6px 8px';
-  div.style.borderRadius = '6px';
-  div.style.fontSize = '11px';
-
-  div.innerHTML = `
-    <div style="font-weight:600;margin-bottom:4px;">Occupation du sol</div>
-    <div><span style="display:inline-block;width:12px;height:12px;background:#d4b896;border:1px solid #b08968;margin-right:4px;"></span>Tissu urbain 2000</div>
-    <div><span style="display:inline-block;width:12px;height:12px;background:#d97706;border:1px solid #c05621;margin-right:4px;"></span>Urbanisation 2000–2010</div>
-    <div><span style="display:inline-block;width:12px;height:12px;background:#dc2626;border:1px solid #b91c1c;margin-right:4px;"></span>Urbanisation 2010–2020</div>
-    <div><span style="display:inline-block;width:12px;height:12px;background:#93c5fd;border:1px solid #2563eb;margin-right:4px;"></span>Zone humide</div>
-    <div><span style="display:inline-block;width:12px;height:12px;border:1px dashed #dc2626;margin-right:4px;"></span>Terres agricoles à risque</div>
-  `;
-  return div;
-};
-legend.addTo(map);
-
-/* -----------------------------
-   Navigation entre sections
------------------------------ */
-function showSection(id){
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
-  document.getElementById('sec-'+id).classList.add('visible');
-
-  document.querySelectorAll('.sm-nav-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-}
-
-/* -----------------------------
-   Navigation scénarios
------------------------------ */
-function showScenario(id){
-  document.querySelectorAll('.scenario-content').forEach(s => s.classList.remove('visible'));
-  document.getElementById('sc-'+id).classList.add('visible');
-
-  document.querySelectorAll('.sc-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-}
-
-/* -----------------------------
-   GRAPHIQUE OCCUPATION DU SOL
------------------------------ */
-new Chart(document.getElementById('chartOccSol'),{
-  type:'bar',
-  data:{
-    labels:['Terres agricoles','Espaces naturels','Tissu urbain','Voirie / imperméab.'],
-    datasets:[
-      {label:'2000 (ha)',data:[1004,211,185,70],backgroundColor:'rgba(201,168,124,.7)',borderRadius:4},
-      {label:'2020 (ha)',data:[862,173,325,110],backgroundColor:['rgba(201,168,124,.35)','rgba(82,183,136,.4)','rgba(224,123,57,.7)','rgba(136,135,128,.6)'],borderRadius:4}
-    ]
-  },
-  options:{
-    responsive:true,
-    maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
-    scales:{
-      x:{grid:{display:false}},
-      y:{title:{display:true,text:'Hectares'}}
-    }
-  }
-});
-
-/* -----------------------------
-   GRAPHIQUE CARBONE
------------------------------ */
-new Chart(document.getElementById('chartCarbone'),{
-  type:'doughnut',
-  data:{
-    labels:['Mobilité','Logement','Agriculture','Déchets'],
-    datasets:[{
-      data:[68,18,9,5],
-      backgroundColor:['#dc2626','#f59e0b','#2d6a4f','#888780'],
-      borderWidth:0
-    }]
-  },
-  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}
-});
-
-/* -----------------------------
-   GRAPHIQUE LOGEMENT
------------------------------ */
-new Chart(document.getElementById('chartLogement'),{
-  type:'doughnut',
-  data:{
-    labels:['Maisons','Appartements','Autres'],
-    datasets:[{
-      data:[89,8,3],
-      backgroundColor:['#e07b39','#4ea8de','#888780'],
-      borderWidth:0
-    }]
-  },
-  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}
-});
-
-/* -----------------------------
-   GRAPHIQUE ZAN
------------------------------ */
-const years=['2021','2023','2025','2027','2030','2035','2040','2050'];
-const actuel=[0,18,36,54,81,126,171,261];
-const zan=[0,9,15,20,27,30,32,32];
-
-new Chart(document.getElementById('chartZAN'),{
-  type:'line',
-  data:{
-    labels:years,
-    datasets:[
-      {label:'Trajectoire actuelle',data:actuel,borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,.1)',fill:true,tension:.3},
-      {label:'Objectif ZAN',data:zan,borderColor:'#2d6a4f',borderDash:[6,3],tension:.3}
-    ]
-  },
-  options:{
-    responsive:true,
-    maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
-    scales:{y:{title:{display:true,text:'Ha artificialisés cumulés'}}}
-  }
-});
-
-/* -----------------------------
-   GRAPHIQUE RADAR
------------------------------ */
-new Chart(document.getElementById('chartRadar'),{
-  type:'radar',
-  data:{
-    labels:['Mobilité durable','Mixité logements','Biodiversité','Agriculture','Eau','Gouvernance'],
-    datasets:[
-      {label:'Corronsac (2024)',data:[12,18,38,52,60,45],borderColor:'#e07b39',backgroundColor:'rgba(224,123,57,.2)'},
-      {label:'Objectif 2040',data:[55,55,70,75,75,70],borderColor:'#2d6a4f',backgroundColor:'rgba(45,106,79,.12)',borderDash:[6,3]}
-    ]
-  },
-  options:{
-    responsive:true,
-    maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
-    scales:{r:{min:0,max:100,ticks:{stepSize:25}}}
-  }
-});
-  /* -----------------------------
-   CARTE INTERACTIVE OCCUPATION DU SOL
------------------------------ */
-
-const map = L.map('mapOccSol').setView([43.51, 1.53], 13);
-
-L.tileLayer(
-  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-  {
-    attribution: '© Esri, HERE, Garmin, OpenStreetMap contributors',
-    maxZoom: 19
-  }
-).addTo(map);
-
-// Urbanisation 2000
-L.polygon([
-  [43.512, 1.525],
-  [43.512, 1.535],
-  [43.507, 1.535],
-  [43.507, 1.525]
-], {
-  color: '#b08968',
-  weight: 1,
-  fillColor: '#d4b896',
-  fillOpacity: 0.7
-}).addTo(map);
-
-// Urbanisation 2000–2010
-L.polygon([
-  [43.515, 1.525],
-  [43.515, 1.54],
-  [43.51, 1.54],
-  [43.51, 1.525]
-], {
-  color: '#c05621',
-  weight: 1,
-  fillColor: '#d97706',
-  fillOpacity: 0.55
-}).addTo(map);
-
-// Urbanisation 2010–2020
-L.polygon([
-  [43.512, 1.535],
-  [43.512, 1.55],
-  [43.507, 1.55],
-  [43.507, 1.535]
-], {
-  color: '#b91c1c',
-  weight: 1,
-  fillColor: '#dc2626',
-  fillOpacity: 0.5
-}).addTo(map);
-
-// Zone humide
-L.circle([43.505, 1.545], {
-  radius: 250,
-  color: '#2563eb',
-  weight: 2,
-  dashArray: '4,3',
-  fillColor: '#93c5fd',
-  fillOpacity: 0.4
-}).addTo(map);
-
-// Terres agricoles à risque
-L.rectangle([
-  [43.518, 1.54],
-  [43.503, 1.56]
-], {
-  color: '#dc2626',
-  weight: 1,
-  dashArray: '6,4',
-  fillOpacity: 0
-}).addTo(map);
-
-// Cours d’eau
-L.polyline([
-  [43.502, 1.52],
-  [43.505, 1.53],
-  [43.508, 1.54],
-  [43.51, 1.55],
-  [43.513, 1.56]
-], {
-  color: '#4ea8de',
-  weight: 3
-}).addTo(map);
-
-</script>
 </body>
 </html>
-
