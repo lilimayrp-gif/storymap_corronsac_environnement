@@ -161,11 +161,11 @@
   <div class="two-cols">
     <div>
       <p>
-        Les données Corine Land Cover 2018 indiquent que Corronsac est dominée par les espaces agricoles
-        et naturels, avec une urbanisation concentrée autour du village et de ses extensions pavillonnaires.
+        Les données Corine Land Cover 2018 montrent que Corronsac est dominée par les espaces agricoles,
+        avec un noyau urbanisé central et quelques extensions pavillonnaires.
       </p>
 
-      <!-- CARTE SVG -->
+      <!-- CARTE SVG AVEC ZONES URBANISÉES + AGRICOLES -->
       <div style="
         background:#f2f2f2;
         padding:20px;
@@ -174,7 +174,7 @@
         margin:20px 0;
       ">
         <h3 style="margin-top:0; font-size:20px; font-weight:600;">
-          Carte statique – Contour de Corronsac
+          Carte statique – Occupation du sol de Corronsac
         </h3>
 
         <svg viewBox="0 0 300 300"
@@ -190,6 +190,39 @@
                           flood-color="#000" flood-opacity="0.25"/>
           </filter>
 
+          <!-- ZONES AGRICOLES (jaune) -->
+          <polygon 
+            points="
+              150,60
+              200,100
+              220,150
+              200,200
+              150,230
+              100,200
+              80,150
+              100,100
+            "
+            fill="#ffe680"
+            stroke="#d1b300"
+            stroke-width="2"
+            opacity="0.9"
+          />
+
+          <!-- ZONES URBANISÉES (rouge) -->
+          <polygon 
+            points="
+              150,120
+              175,150
+              150,180
+              125,150
+            "
+            fill="#ff6b6b"
+            stroke="#b30000"
+            stroke-width="2"
+            filter="url(#shadow)"
+          />
+
+          <!-- CONTOUR COMMUNAL -->
           <polygon 
             points="
               150,40
@@ -203,15 +236,15 @@
               80,100
               120,60
             "
-            fill="#ffb36b"
+            fill="none"
             stroke="#d96a00"
             stroke-width="4"
-            filter="url(#shadow)"
           />
+
         </svg>
 
         <p style="font-size:12px; color:#555; margin-top:8px;">
-          Représentation statique du contour communal de Corronsac.
+          Carte statique simplifiée : zones urbanisées (rouge), zones agricoles (jaune), contour communal (orange).
         </p>
       </div>
     </div>
@@ -248,7 +281,7 @@
     <div>
       <p>
         Corronsac est exposée à plusieurs aléas : retrait-gonflement des argiles, ruissellement pluvial,
-        mouvements de terrain ponctuels. Ces risques doivent être intégrés dans les projets d’aménagement.
+        mouvements de terrain ponctuels.
       </p>
     </div>
 
@@ -274,8 +307,6 @@
     <div>
       <p>
         Les haies, boisements et fonds de vallons constituent l’ossature écologique du territoire.
-        Ils assurent des fonctions essentielles : corridors pour la faune, régulation hydrologique,
-        stockage de carbone.
       </p>
     </div>
 
@@ -302,7 +333,6 @@
     <div>
       <p>
         Le parc de logements est dominé par les maisons individuelles, avec une densité faible.
-        Cette morphologie consomme du foncier et renforce la dépendance à la voiture.
       </p>
     </div>
 
@@ -326,8 +356,7 @@
   <div class="two-cols">
     <div>
       <p>
-        Les émissions sont dominées par les transports et le résidentiel, typiques des communes
-        périurbaines dépendantes de la voiture.
+        Les émissions sont dominées par les transports et le résidentiel.
       </p>
     </div>
 
