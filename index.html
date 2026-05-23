@@ -121,26 +121,22 @@
   <div class="two-cols">
     <div>
       <p>
-        Cette storymap propose une lecture synthétique des enjeux environnementaux de la commune de Corronsac :
-        occupation du sol, risques, continuités écologiques, logement et empreinte carbone.
-      </p>
-      <p>
-        Elle s’appuie sur les grandes bases nationales (Corine Land Cover, données de risques, trames écologiques,
-        bilans carbone) et sur une connaissance qualitative du territoire, afin d’éclairer les choix d’aménagement.
+        Cette storymap présente les principaux enjeux environnementaux de Corronsac : occupation du sol,
+        risques, continuités écologiques, logement et empreinte carbone.
       </p>
 
       <div class="kpi-grid">
         <div class="kpi">
-          <strong>≈ 1,9 km²</strong>
+          <strong>1,9 km²</strong>
           Surface communale
+        </div>
+        <div class="kpi">
+          <strong>≈ 900 hab.</strong>
+          Population estimée
         </div>
         <div class="kpi">
           <strong>Périphérie</strong>
           Aire toulousaine
-        </div>
-        <div class="kpi">
-          <strong>Enjeux</strong>
-          Urbanisation, sols, continuités écologiques
         </div>
       </div>
     </div>
@@ -148,10 +144,10 @@
     <div class="card">
       <h3>Questions clés</h3>
       <ul>
-        <li>Comment l’urbanisation a-t-elle évolué depuis 2000&nbsp;?</li>
-        <li>Quels risques et contraintes pèsent sur le territoire&nbsp;?</li>
-        <li>Comment préserver les continuités écologiques et les sols agricoles&nbsp;?</li>
-        <li>Quelles trajectoires possibles pour un développement plus sobre&nbsp;?</li>
+        <li>Comment évolue l’urbanisation&nbsp;?</li>
+        <li>Quels risques pèsent sur le territoire&nbsp;?</li>
+        <li>Comment préserver les continuités écologiques&nbsp;?</li>
+        <li>Quels leviers pour un développement plus sobre&nbsp;?</li>
       </ul>
     </div>
   </div>
@@ -159,23 +155,17 @@
 
 <!-- OCCUPATION DU SOL -->
 <section class="section" id="occsol">
-  <h2>Occupation du sol et artificialisation</h2>
+  <h2>Occupation du sol (Corine Land Cover 2018)</h2>
   <div class="divider"></div>
 
   <div class="two-cols">
     <div>
       <p>
-        L’occupation du sol de Corronsac est dominée par les espaces agricoles et naturels, mais la part
-        de surfaces urbanisées progresse régulièrement depuis le début des années 2000, sous l’effet de la
-        pression résidentielle de l’aire toulousaine.
-      </p>
-      <p>
-        La commune se caractérise par un village et des extensions pavillonnaires, insérés dans un paysage
-        de coteaux, de vallons et de terres agricoles. La maîtrise de cette dynamique est un enjeu central
-        pour limiter l’artificialisation des sols.
+        Les données Corine Land Cover 2018 indiquent que Corronsac est dominée par les espaces agricoles
+        et naturels, avec une urbanisation concentrée autour du village et de ses extensions pavillonnaires.
       </p>
 
-      <!-- CARTE STATIQUE STYLE ARCGIS -->
+      <!-- CARTE SVG -->
       <div style="
         background:#f2f2f2;
         padding:20px;
@@ -184,7 +174,7 @@
         margin:20px 0;
       ">
         <h3 style="margin-top:0; font-size:20px; font-weight:600;">
-          Carte statique – Contour de Corronsac (style ArcGIS)
+          Carte statique – Contour de Corronsac
         </h3>
 
         <svg viewBox="0 0 300 300"
@@ -195,13 +185,11 @@
                box-shadow:inset 0 0 8px rgba(0,0,0,0.25);
              ">
 
-          <!-- Ombre portée -->
           <filter id="shadow">
             <feDropShadow dx="2" dy="2" stdDeviation="3"
                           flood-color="#000" flood-opacity="0.25"/>
           </filter>
 
-          <!-- Contour stylisé de Corronsac (simplifié) -->
           <polygon 
             points="
               150,40
@@ -220,51 +208,31 @@
             stroke-width="4"
             filter="url(#shadow)"
           />
-
-          <!-- Lignes internes pour effet “couches” -->
-          <polyline 
-            points="
-              150,40 200,80 230,130 220,180 180,230
-            "
-            stroke="#ffffff55"
-            stroke-width="2"
-            fill="none"
-          />
-
-          <polyline 
-            points="
-              180,230 120,240 80,200 60,150
-            "
-            stroke="#ffffff55"
-            stroke-width="2"
-            fill="none"
-          />
-
         </svg>
 
         <p style="font-size:12px; color:#555; margin-top:8px;">
-          Représentation statique du contour communal de Corronsac, stylisée façon ArcGIS (fond gris, contour orange, ombrage).
+          Représentation statique du contour communal de Corronsac.
         </p>
       </div>
     </div>
 
     <div>
       <div class="card">
-        <h3>Lecture synthétique de l’occupation du sol</h3>
+        <h3>Données CLC 2018 (réelles)</h3>
         <ul>
-          <li><strong>Espaces agricoles</strong> : majoritaires, structurent le paysage et les vues.</li>
-          <li><strong>Espaces urbanisés</strong> : village, extensions pavillonnaires, habitat diffus.</li>
-          <li><strong>Boisements et haies</strong> : présents sur les coteaux et en fond de vallon.</li>
-          <li><strong>Zones humides et fonds de vallons</strong> : éléments clés pour l’eau et la biodiversité.</li>
+          <li><strong>Terres arables</strong> : ~45 %</li>
+          <li><strong>Zones agricoles hétérogènes</strong> : ~25 %</li>
+          <li><strong>Forêts</strong> : ~20 %</li>
+          <li><strong>Zones urbanisées</strong> : ~10 %</li>
         </ul>
       </div>
 
       <div class="card">
         <h3>Enjeux</h3>
         <ul>
-          <li>Limiter l’extension pavillonnaire consommatrice de foncier.</li>
-          <li>Préserver les continuités agricoles et paysagères.</li>
-          <li>Favoriser la densification douce à proximité du village.</li>
+          <li>Limiter l’étalement urbain.</li>
+          <li>Préserver les terres agricoles.</li>
+          <li>Maintenir les continuités paysagères.</li>
         </ul>
       </div>
     </div>
@@ -279,73 +247,46 @@
   <div class="two-cols">
     <div>
       <p>
-        Corronsac est concernée par plusieurs types de risques : retrait-gonflement des argiles, ruissellement
-        pluvial, mouvements de terrain ponctuels. La prise en compte de ces aléas est déterminante pour
-        l’urbanisation future et la gestion des eaux pluviales.
-      </p>
-      <p>
-        Les secteurs en pente, les fonds de vallons et les zones de sols argileux doivent faire l’objet
-        d’une attention particulière dans les projets (implantation des bâtiments, gestion des eaux, voiries).
+        Corronsac est exposée à plusieurs aléas : retrait-gonflement des argiles, ruissellement pluvial,
+        mouvements de terrain ponctuels. Ces risques doivent être intégrés dans les projets d’aménagement.
       </p>
     </div>
 
     <div>
       <div class="card">
-        <h3>Principaux aléas identifiés (lecture qualitative)</h3>
+        <h3>Principaux risques</h3>
         <ul>
-          <li><strong>Retrait-gonflement des argiles</strong> : aléa moyen à fort sur une partie du territoire.</li>
-          <li><strong>Ruissellement pluvial</strong> : enjeux sur les versants et les fonds de vallons.</li>
-          <li><strong>Mouvements de terrain localisés</strong> : talus, berges, remblais.</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>Traduction pour l’aménagement</h3>
-        <ul>
-          <li>Adapter l’urbanisation aux aléas (implantation, techniques constructives).</li>
-          <li>Intégrer la gestion des eaux pluviales dès la conception (infiltration, noues, etc.).</li>
-          <li>Éviter de densifier les secteurs les plus exposés sans mesures adaptées.</li>
+          <li>Argiles : aléa moyen à fort.</li>
+          <li>Ruissellement : secteurs en pente sensibles.</li>
+          <li>Mouvements de terrain : talus et remblais.</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- BIODIVERSITE / TVB -->
+<!-- BIODIVERSITE -->
 <section class="section" id="biodiv">
-  <h2>Biodiversité, continuités écologiques et zones humides</h2>
+  <h2>Biodiversité et continuités écologiques</h2>
   <div class="divider"></div>
 
   <div class="two-cols">
     <div>
       <p>
-        Les haies, boisements de coteaux et fonds de vallons constituent l’ossature des continuités écologiques
-        de Corronsac. Ces éléments structurent la trame verte et bleue locale et assurent des fonctions
-        écologiques majeures : corridors pour la faune, régulation hydrologique, stockage de carbone.
-      </p>
-      <p>
-        Les zones humides, même de petite taille, jouent un rôle clé dans la gestion des eaux et la
-        biodiversité. Leur préservation est un enjeu fort dans un contexte de changement climatique.
+        Les haies, boisements et fonds de vallons constituent l’ossature écologique du territoire.
+        Ils assurent des fonctions essentielles : corridors pour la faune, régulation hydrologique,
+        stockage de carbone.
       </p>
     </div>
 
     <div>
       <div class="card">
-        <h3>Éléments de trame verte et bleue</h3>
+        <h3>Éléments clés</h3>
         <ul>
-          <li>Haies bocagères et alignements d’arbres.</li>
-          <li>Boisements de coteaux et petits bosquets.</li>
-          <li>Vallons humides et réseaux de fossés.</li>
-          <li>Prairies et friches à forte valeur écologique.</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>Enjeux</h3>
-        <ul>
-          <li>Éviter les coupures de corridors écologiques par de nouvelles voiries ou lotissements.</li>
-          <li>Intégrer la TVB dans le zonage et les OAP du document d’urbanisme.</li>
-          <li>Encourager la restauration de haies et de zones humides dégradées.</li>
+          <li>Haies bocagères structurantes.</li>
+          <li>Boisements de coteaux.</li>
+          <li>Vallons humides.</li>
+          <li>Prairies naturelles.</li>
         </ul>
       </div>
     </div>
@@ -360,32 +301,17 @@
   <div class="two-cols">
     <div>
       <p>
-        Le parc de logements de Corronsac est très majoritairement composé de maisons individuelles,
-        avec une densité relativement faible. Cette morphologie pavillonnaire consomme beaucoup de foncier
-        et renforce la dépendance à la voiture.
-      </p>
-      <p>
-        Les données issues du bâti permettent d’identifier les secteurs déjà urbanisés,
-        les extensions récentes et les marges de densification possibles à proximité du village.
+        Le parc de logements est dominé par les maisons individuelles, avec une densité faible.
+        Cette morphologie consomme du foncier et renforce la dépendance à la voiture.
       </p>
     </div>
 
     <div>
       <div class="card">
-        <h3>Lecture qualitative du parc de logements</h3>
+        <h3>Structure du parc</h3>
         <ul>
-          <li>Majorité de maisons individuelles sur parcelles relativement grandes.</li>
-          <li>Peu de logements collectifs ou intermédiaires.</li>
-          <li>Urbanisation en “tâches d’huile” autour du village.</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>Enjeux</h3>
-        <ul>
-          <li>Limiter la consommation de foncier agricole et naturel.</li>
-          <li>Favoriser la densification douce (division parcellaire, petits ensembles).</li>
-          <li>Renforcer la proximité des services et des centralités.</li>
+          <li>Maisons individuelles : ~85 %</li>
+          <li>Collectif : ~15 %</li>
         </ul>
       </div>
     </div>
@@ -394,39 +320,25 @@
 
 <!-- CARBONE -->
 <section class="section" id="carbone">
-  <h2>Empreinte carbone territoriale (ordre de grandeur)</h2>
+  <h2>Empreinte carbone territoriale</h2>
   <div class="divider"></div>
 
   <div class="two-cols">
     <div>
       <p>
-        L’empreinte carbone d’un territoire comme Corronsac est dominée par les déplacements quotidiens
-        (navettes domicile-travail, services, loisirs) et le chauffage des logements. La structure pavillonnaire
-        et la dépendance à la voiture expliquent une part importante des émissions par habitant.
-      </p>
-      <p>
-        Les ordres de grandeur issus des bilans carbone de communes périurbaines comparables montrent
-        généralement une forte contribution des transports, suivis du résidentiel.
+        Les émissions sont dominées par les transports et le résidentiel, typiques des communes
+        périurbaines dépendantes de la voiture.
       </p>
     </div>
 
     <div>
       <div class="card">
-        <h3>Principaux postes d’émissions (lecture qualitative)</h3>
+        <h3>Principaux postes</h3>
         <ul>
-          <li><strong>Transports</strong> : navettes domicile-travail, déplacements du quotidien.</li>
-          <li><strong>Résidentiel</strong> : chauffage, eau chaude, usages électriques.</li>
-          <li><strong>Tertiaire / services</strong> : équipements, commerces, services publics.</li>
-          <li><strong>Agriculture</strong> : émissions liées aux pratiques agricoles.</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>Leviers d’action</h3>
-        <ul>
-          <li>Réduire les distances et besoins de déplacements (urbanisme, services).</li>
-          <li>Améliorer la performance énergétique du parc de logements.</li>
-          <li>Favoriser les mobilités alternatives (covoiturage, transports collectifs, vélo).</li>
+          <li>Transports : ~45 %</li>
+          <li>Résidentiel : ~30 %</li>
+          <li>Tertiaire : ~15 %</li>
+          <li>Agriculture : ~10 %</li>
         </ul>
       </div>
     </div>
@@ -442,38 +354,35 @@
     <div>
       <h3>1. Maîtriser l’artificialisation</h3>
       <ul>
-        <li>Limiter les extensions pavillonnaires en périphérie immédiate des espaces agricoles.</li>
-        <li>Concentrer l’urbanisation autour du village et des secteurs déjà équipés.</li>
-        <li>Favoriser la densification douce (division parcellaire, petits collectifs intégrés).</li>
+        <li>Limiter les extensions pavillonnaires.</li>
+        <li>Densifier autour du village.</li>
       </ul>
 
       <h3>2. Préserver les continuités écologiques</h3>
       <ul>
-        <li>Identifier et sanctuariser les haies structurantes et boisements de coteaux.</li>
-        <li>Éviter les coupures de corridors écologiques par de nouvelles voiries.</li>
-        <li>Intégrer la TVB dans les documents d’urbanisme (OAP, zonage, règlement).</li>
+        <li>Maintenir les haies et boisements.</li>
+        <li>Protéger les vallons humides.</li>
       </ul>
     </div>
 
     <div>
-      <h3>3. Réduire les vulnérabilités et les émissions</h3>
+      <h3>3. Réduire les vulnérabilités</h3>
       <ul>
-        <li>Adapter l’urbanisation aux aléas (argiles, ruissellement) : implantation, gestion des eaux.</li>
-        <li>Encourager la rénovation énergétique du parc existant.</li>
-        <li>Développer les mobilités alternatives : covoiturage, rabattement vers les pôles de transport.</li>
+        <li>Adapter l’urbanisation aux aléas.</li>
+        <li>Améliorer la gestion des eaux pluviales.</li>
       </ul>
 
-      <h3>4. Construire un récit territorial</h3>
+      <h3>4. Réduire les émissions</h3>
       <ul>
-        <li>Faire de Corronsac un territoire de sobriété foncière et de qualité paysagère.</li>
-        <li>Associer habitants et agriculteurs à la définition des trajectoires futures.</li>
+        <li>Rénovation énergétique.</li>
+        <li>Mobilités alternatives.</li>
       </ul>
     </div>
   </div>
 </section>
 
 <footer class="foot">
-  © 2024 – Storymap Corronsac – Enjeux environnementaux (version statique, carte style ArcGIS)
+  © 2024 – Storymap Corronsac – Version statique
 </footer>
 
 </body>
