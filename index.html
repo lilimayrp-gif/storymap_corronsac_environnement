@@ -162,110 +162,86 @@
     <div>
       <p>
         Les données Corine Land Cover 2018 montrent que Corronsac est dominée par les espaces agricoles,
-        avec un noyau urbanisé central et quelques extensions pavillonnaires.
+        suivis des milieux forestiers et d’un noyau urbanisé central. Le diagramme ci‑dessous synthétise
+        la répartition des principales classes CLC sur la commune.
       </p>
 
-      <!-- CARTE SVG AVEC ZONES URBANISÉES + AGRICOLES -->
+      <!-- BLOC DIAGRAMME CLC -->
       <div style="
-        background:#f2f2f2;
-        padding:20px;
-        border-radius:12px;
-        box-shadow:0 2px 6px rgba(0,0,0,0.15);
+        background:#ffffff;
+        padding:24px;
+        border-radius:14px;
+        box-shadow:0 3px 10px rgba(0,0,0,0.12);
         margin:20px 0;
       ">
         <h3 style="margin-top:0; font-size:20px; font-weight:600;">
-          Carte statique – Occupation du sol de Corronsac
+          Répartition des classes CLC – Corronsac
         </h3>
 
-        <svg viewBox="0 0 300 300"
-             style="
-               width:100%;
-               border-radius:10px;
-               background:#e6e6e6;
-               box-shadow:inset 0 0 8px rgba(0,0,0,0.25);
-             ">
+        <svg viewBox="0 0 700 420" style="width:100%; border-radius:12px; background:#f5f5f5;">
 
-          <filter id="shadow">
-            <feDropShadow dx="2" dy="2" stdDeviation="3"
-                          flood-color="#000" flood-opacity="0.25"/>
-          </filter>
+          <rect x="0" y="0" width="700" height="420" fill="#f5f5f5"/>
 
-          <!-- ZONES AGRICOLES (jaune) -->
-          <polygon 
-            points="
-              150,60
-              200,100
-              220,150
-              200,200
-              150,230
-              100,200
-              80,150
-              100,100
-            "
-            fill="#ffe680"
-            stroke="#d1b300"
-            stroke-width="2"
-            opacity="0.9"
-          />
+          <text x="30" y="40" font-size="22" fill="#333" font-weight="600">
+            Occupation du sol (CLC 2018)
+          </text>
 
-          <!-- ZONES URBANISÉES (rouge) -->
-          <polygon 
-            points="
-              150,120
-              175,150
-              150,180
-              125,150
-            "
-            fill="#ff6b6b"
-            stroke="#b30000"
-            stroke-width="2"
-            filter="url(#shadow)"
-          />
+          <!-- TERRES ARABLES -->
+          <rect x="30" y="80" width="500" height="50"
+                fill="#fff2a8" stroke="#d4c46a" stroke-width="2"/>
+          <text x="40" y="112" font-size="18" fill="#444">
+            Terres arables – 45 %
+          </text>
 
-          <!-- CONTOUR COMMUNAL -->
-          <polygon 
-            points="
-              150,40
-              200,80
-              230,130
-              220,180
-              180,230
-              120,240
-              80,200
-              60,150
-              80,100
-              120,60
-            "
-            fill="none"
-            stroke="#d96a00"
-            stroke-width="4"
-          />
+          <!-- ZONES AGRICOLES HÉTÉROGÈNES -->
+          <rect x="30" y="150" width="350" height="50"
+                fill="#e6d98c" stroke="#b8a86a" stroke-width="2"/>
+          <text x="40" y="182" font-size="18" fill="#444">
+            Zones agricoles hétérogènes – 25 %
+          </text>
 
+          <!-- FORÊTS -->
+          <rect x="30" y="220" width="250" height="50"
+                fill="#a6c98a" stroke="#6f8f5a" stroke-width="2"/>
+          <text x="40" y="252" font-size="18" fill="#444">
+            Forêts – 20 %
+          </text>
+
+          <!-- ZONES URBANISÉES -->
+          <rect x="30" y="290" width="120" height="50"
+                fill="#ff8a8a" stroke="#b84c4c" stroke-width="2"/>
+          <text x="40" y="322" font-size="18" fill="#444">
+            Zones urbanisées – 10 %
+          </text>
+
+          <text x="30" y="380" font-size="14" fill="#666">
+            Source : Corine Land Cover 2018 – données simplifiées pour Corronsac
+          </text>
         </svg>
 
-        <p style="font-size:12px; color:#555; margin-top:8px;">
-          Carte statique simplifiée : zones urbanisées (rouge), zones agricoles (jaune), contour communal (orange).
+        <p style="font-size:13px; color:#666; margin-top:10px;">
+          Diagramme statique basé sur les proportions CLC : terres arables (45&nbsp;%), zones agricoles hétérogènes (25&nbsp;%),
+          forêts (20&nbsp;%), zones urbanisées (10&nbsp;%).
         </p>
       </div>
     </div>
 
     <div>
       <div class="card">
-        <h3>Données CLC 2018 (réelles)</h3>
+        <h3>Lecture synthétique</h3>
         <ul>
-          <li><strong>Terres arables</strong> : ~45 %</li>
-          <li><strong>Zones agricoles hétérogènes</strong> : ~25 %</li>
-          <li><strong>Forêts</strong> : ~20 %</li>
-          <li><strong>Zones urbanisées</strong> : ~10 %</li>
+          <li>Forte dominante agricole (terres arables + agricoles hétérogènes).</li>
+          <li>Présence significative de milieux forestiers.</li>
+          <li>Noyau urbanisé limité mais en extension progressive.</li>
         </ul>
       </div>
 
       <div class="card">
         <h3>Enjeux</h3>
         <ul>
-          <li>Limiter l’étalement urbain.</li>
-          <li>Préserver les terres agricoles.</li>
-          <li>Maintenir les continuités paysagères.</li>
+          <li>Limiter l’étalement urbain sur les terres agricoles.</li>
+          <li>Préserver les continuités paysagères et forestières.</li>
+          <li>Concentrer l’urbanisation autour du village existant.</li>
         </ul>
       </div>
     </div>
@@ -281,7 +257,7 @@
     <div>
       <p>
         Corronsac est exposée à plusieurs aléas : retrait-gonflement des argiles, ruissellement pluvial,
-        mouvements de terrain ponctuels.
+        mouvements de terrain ponctuels. Ces risques doivent être intégrés dans les projets d’aménagement.
       </p>
     </div>
 
@@ -289,9 +265,9 @@
       <div class="card">
         <h3>Principaux risques</h3>
         <ul>
-          <li>Argiles : aléa moyen à fort.</li>
-          <li>Ruissellement : secteurs en pente sensibles.</li>
-          <li>Mouvements de terrain : talus et remblais.</li>
+          <li>Argiles : aléa moyen à fort sur une partie du territoire.</li>
+          <li>Ruissellement : secteurs en pente et fonds de vallons sensibles.</li>
+          <li>Mouvements de terrain : talus, remblais, berges instables.</li>
         </ul>
       </div>
     </div>
@@ -307,6 +283,8 @@
     <div>
       <p>
         Les haies, boisements et fonds de vallons constituent l’ossature écologique du territoire.
+        Ils assurent des fonctions essentielles : corridors pour la faune, régulation hydrologique,
+        stockage de carbone.
       </p>
     </div>
 
@@ -315,9 +293,9 @@
         <h3>Éléments clés</h3>
         <ul>
           <li>Haies bocagères structurantes.</li>
-          <li>Boisements de coteaux.</li>
-          <li>Vallons humides.</li>
-          <li>Prairies naturelles.</li>
+          <li>Boisements de coteaux et petits bosquets.</li>
+          <li>Vallons humides et réseaux de fossés.</li>
+          <li>Prairies naturelles et friches à forte valeur écologique.</li>
         </ul>
       </div>
     </div>
@@ -333,6 +311,7 @@
     <div>
       <p>
         Le parc de logements est dominé par les maisons individuelles, avec une densité faible.
+        Cette morphologie consomme du foncier et renforce la dépendance à la voiture.
       </p>
     </div>
 
@@ -340,8 +319,8 @@
       <div class="card">
         <h3>Structure du parc</h3>
         <ul>
-          <li>Maisons individuelles : ~85 %</li>
-          <li>Collectif : ~15 %</li>
+          <li>Maisons individuelles : ~85&nbsp;%</li>
+          <li>Logements collectifs ou intermédiaires : ~15&nbsp;%</li>
         </ul>
       </div>
     </div>
@@ -356,7 +335,8 @@
   <div class="two-cols">
     <div>
       <p>
-        Les émissions sont dominées par les transports et le résidentiel.
+        Les émissions sont dominées par les transports et le résidentiel, typiques des communes
+        périurbaines dépendantes de la voiture.
       </p>
     </div>
 
@@ -364,10 +344,10 @@
       <div class="card">
         <h3>Principaux postes</h3>
         <ul>
-          <li>Transports : ~45 %</li>
-          <li>Résidentiel : ~30 %</li>
-          <li>Tertiaire : ~15 %</li>
-          <li>Agriculture : ~10 %</li>
+          <li>Transports : ~45&nbsp;%</li>
+          <li>Résidentiel : ~30&nbsp;%</li>
+          <li>Tertiaire : ~15&nbsp;%</li>
+          <li>Agriculture : ~10&nbsp;%</li>
         </ul>
       </div>
     </div>
@@ -384,27 +364,27 @@
       <h3>1. Maîtriser l’artificialisation</h3>
       <ul>
         <li>Limiter les extensions pavillonnaires.</li>
-        <li>Densifier autour du village.</li>
+        <li>Densifier autour du village existant.</li>
       </ul>
 
       <h3>2. Préserver les continuités écologiques</h3>
       <ul>
-        <li>Maintenir les haies et boisements.</li>
-        <li>Protéger les vallons humides.</li>
+        <li>Maintenir les haies et boisements structurants.</li>
+        <li>Protéger les vallons humides et fonds de vallées.</li>
       </ul>
     </div>
 
     <div>
       <h3>3. Réduire les vulnérabilités</h3>
       <ul>
-        <li>Adapter l’urbanisation aux aléas.</li>
+        <li>Adapter l’urbanisation aux aléas identifiés.</li>
         <li>Améliorer la gestion des eaux pluviales.</li>
       </ul>
 
       <h3>4. Réduire les émissions</h3>
       <ul>
-        <li>Rénovation énergétique.</li>
-        <li>Mobilités alternatives.</li>
+        <li>Rénovation énergétique du parc bâti.</li>
+        <li>Développement des mobilités alternatives.</li>
       </ul>
     </div>
   </div>
