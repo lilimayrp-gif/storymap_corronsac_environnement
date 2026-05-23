@@ -1,11 +1,615 @@
+
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Test GitHub Pages</title>
+<meta charset="UTF-8">
+/storymap_corronsac_environnement/
+    index.html   ← ici !
+
+
+
+/* ton CSS ici */
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --c-forest:#2d6a4f;--c-forest-light:#52b788;--c-forest-pale:#d8f3dc;
+    --c-earth:#8b5e3c;--c-earth-light:#c9a87c;--c-earth-pale:#f5ebe0;
+    --c-sky:#1a6fb0;--c-sky-light:#4ea8de;--c-sky-pale:#dbeafe;
+    --c-warn:#b45309;--c-warn-light:#f59e0b;--c-warn-pale:#fef3c7;
+    --c-danger:#991b1b;--c-danger-light:#ef4444;--c-danger-pale:#fee2e2;
+    --c-text:#1c1917;--c-muted:#57534e;--c-border:#e7e5e4;
+    --c-bg:#fafaf9;--c-white:#ffffff;
+  }
+  body{font-family:'Source Sans 3',sans-serif;color:var(--c-text);background:var(--c-bg);font-size:16px;line-height:1.7}
+  .sm-hero{background:linear-gradient(160deg,#1a3a2a 0%,#2d6a4f 45%,#3a8a65 100%);color:#fff;padding:3.5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden}
+  .sm-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+  .sm-hero h1{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;margin-bottom:.5rem;position:relative}
+  .sm-hero .subtitle{font-size:1.05rem;opacity:.85;max-width:600px;margin:0 auto 1.5rem;position:relative}
+  .sm-hero .meta{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;position:relative}
+  .meta-chip{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:.3rem .9rem;font-size:.8rem;font-weight:600;letter-spacing:.03em}
+  .sm-nav{display:flex;overflow-x:auto;background:var(--c-white);border-bottom:2px solid var(--c-forest);gap:0;scrollbar-width:none}
+  .sm-nav::-webkit-scrollbar{display:none}
+  .sm-nav-btn{padding:.7rem 1.1rem;font-size:.8rem;font-weight:600;color:var(--c-muted);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;text-transform:uppercase;letter-spacing:.06em}
+  .sm-nav-btn.active,.sm-nav-btn:hover{color:var(--c-forest);border-bottom-color:var(--c-forest)}
+  .section{display:none;padding:2rem 1.5rem;max-width:820px;margin:0 auto}
+  .section.visible{display:block}
+  h2{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--c-forest);margin-bottom:.3rem}
+  h3{font-size:1.1rem;font-weight:600;color:var(--c-text);margin:1.5rem 0 .5rem}
+  .lead{font-size:1.05rem;color:var(--c-muted);margin-bottom:1.5rem;font-weight:300}
+  .section-label{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--c-forest-light);margin-bottom:.3rem}
+  .divider{height:3px;width:50px;background:var(--c-forest-light);border-radius:2px;margin-bottom:1.5rem}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0}
+  .stat-card{background:var(--c-white);border:1px solid var(--c-border);border-radius:12px;padding:1.1rem 1.2rem}
+  .stat-card .val{font-size:1.9rem;font-weight:700;line-height:1;margin:.3rem 0}
+  .stat-card .lbl{font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--c-muted)}
+  .stat-card .trend{font-size:.78rem;margin-top:.3rem}
+  .stat-card.forest .val{color:var(--c-forest)}
+  .stat-card.earth .val{color:var(--c-earth)}
+  .stat-card.sky .val{color:var(--c-sky)}
+  .stat-card.warn .val{color:var(--c-warn)}
+  .stat-card.danger .val{color:var(--c-danger)}
+  .map-block{background:var(--c-white);border:1px solid var(--c-border);border-radius:12px;overflow:hidden;margin:1.5rem 0}
+  .map-block .map-header{padding:.8rem 1rem;border-bottom:1px solid var(--c-border);display:flex;align-items:center;justify-content:space-between}
+  .map-block .map-title{font-size:.85rem;font-weight:600}
+  .map-block .map-year{font-size:.75rem;color:var(--c-muted);background:var(--c-bg);border-radius:20px;padding:.15rem .6rem}
+  .map-area{padding:.5rem;display:flex;justify-content:center}
+  .analysis-box{background:var(--c-forest-pale);border-left:4px solid var(--c-forest);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1.5rem 0}
+  .analysis-box.warn{background:var(--c-warn-pale);border-color:var(--c-warn)}
+  .analysis-box.danger{background:var(--c-danger-pale);border-color:var(--c-danger)}
+  .analysis-box.sky{background:var(--c-sky-pale);border-color:var(--c-sky)}
+  .analysis-box p{font-size:.9rem;line-height:1.65;color:var(--c-text)}
+  .timeline{position:relative;padding-left:1.8rem;margin:1rem 0}
+  .timeline::before{content:'';position:absolute;left:.4rem;top:0;bottom:0;width:2px;background:var(--c-border)}
+  .tl-item{position:relative;margin-bottom:1.3rem}
+  .tl-dot{position:absolute;left:-1.5rem;top:.35rem;width:12px;height:12px;border-radius:50%;background:var(--c-forest);border:2px solid var(--c-white);box-shadow:0 0 0 2px var(--c-forest)}
+  .tl-year{font-size:.75rem;font-weight:700;color:var(--c-forest);text-transform:uppercase;letter-spacing:.05em}
+  .tl-text{font-size:.88rem;color:var(--c-muted);line-height:1.5}
+  .legend-row{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;margin:.7rem 0;font-size:.78rem}
+  .leg-item{display:flex;align-items:center;gap:.4rem}
+  .leg-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+  .chart-wrap{position:relative;width:100%;margin:1rem 0}
+  .dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0}
+  @media(max-width:520px){.dashboard-grid{grid-template-columns:1fr}}
+  .pression-bar{display:flex;flex-direction:column;gap:.5rem;margin:1rem 0}
+  .pb-row{display:flex;align-items:center;gap:.7rem;font-size:.82rem}
+  .pb-label{min-width:110px;color:var(--c-muted);text-align:right}
+  .pb-track{flex:1;height:18px;background:var(--c-border);border-radius:9px;overflow:hidden}
+  .pb-fill{height:100%;border-radius:9px;transition:width .6s ease}
+  .pb-val{min-width:34px;font-weight:600;font-size:.8rem}
+  .risk-matrix{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:1rem 0}
+  .risk-cell{border-radius:10px;padding:.9rem 1rem;font-size:.82rem}
+  .risk-cell .rt{font-weight:600;margin-bottom:.2rem;font-size:.85rem}
+  .risk-cell.high{background:#fee2e2;color:#991b1b}
+  .risk-cell.med{background:#fef3c7;color:#92400e}
+  .risk-cell.low{background:#dcfce7;color:#166534}
+  .scenario-tabs{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+  .sc-btn{padding:.4rem .9rem;border-radius:20px;border:1px solid var(--c-border);font-size:.8rem;font-weight:600;cursor:pointer;background:var(--c-white);color:var(--c-muted);transition:all .2s}
+  .sc-btn.active{background:var(--c-forest);color:#fff;border-color:var(--c-forest)}
+  .scenario-content{background:var(--c-white);border:1px solid var(--c-border);border-radius:10px;padding:1.1rem 1.2rem;font-size:.88rem;line-height:1.65;display:none}
+  .scenario-content.visible{display:block}
+  .preconisation{display:flex;gap:.8rem;align-items:flex-start;margin:.7rem 0;padding:.8rem 1rem;background:var(--c-white);border:1px solid var(--c-border);border-radius:8px}
+  .prec-num{width:28px;height:28px;border-radius:50%;background:var(--c-forest);color:#fff;font-weight:700;font-size:.82rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem}
+  .prec-text{font-size:.88rem;line-height:1.5}
+  .prec-text strong{color:var(--c-forest)}
+  .footer-sm{text-align:center;padding:2rem 1rem;color:var(--c-muted);font-size:.78rem;border-top:1px solid var(--c-border);margin-top:2rem}
+</style>
+
+<h2 class="sr-only" style="position:absolute;left:-9999px">Story-map : Corronsac face à l'étalement urbain — enjeux environnementaux et d'aménagement</h2>
+
+<div class="sm-hero">
+  <div class="section-label" style="color:rgba(255,255,255,.7);margin-bottom:.5rem">Story-map · Géographie & Environnement</div>
+  <h1>Corronsac face à l'étalement urbain</h1>
+  <p class="subtitle">Entre pression foncière et préservation des espaces naturels et agricoles — enjeux d'aménagement d'une commune périurbaine toulousaine</p>
+  <div class="meta">
+    <span class="meta-chip">Haute-Garonne (31)</span>
+    <span class="meta-chip">Aire urbaine de Toulouse</span>
+    <span class="meta-chip">SIG · Données 2024</span>
+    <span class="meta-chip">M1 Géographie · 2025-2026</span>
+  </div>
+</div>
+
+<nav class="sm-nav" id="nav">
+  <button class="sm-nav-btn active" onclick="showSection('intro')">Introduction</button>
+  <button class="sm-nav-btn" onclick="showSection('territoire')">Le territoire</button>
+  <button class="sm-nav-btn" onclick="showSection('demo')">Démographie</button>
+  <button class="sm-nav-btn" onclick="showSection('occupation')">Occupation du sol</button>
+  <button class="sm-nav-btn" onclick="showSection('risques')">Risques & pressions</button>
+  <button class="sm-nav-btn" onclick="showSection('dashboard')">Dashboard</button>
+  <button class="sm-nav-btn" onclick="showSection('scenarios')">Scénarios</button>
+  <button class="sm-nav-btn" onclick="showSection('preconisations')">Préconisations</button>
+</nav>
+
+<!-- INTRO -->
+<div class="section visible" id="sec-intro">
+  <div class="section-label">Mise en contexte</div>
+  <h2>Problématique</h2>
+  <div class="divider"></div>
+  <p class="lead">Comment Corronsac, commune rurale en voie de périurbanisation, peut-elle concilier l'accueil de nouveaux habitants avec la préservation de ses espaces naturels, agricoles et de sa qualité de vie ?</p>
+  <div class="analysis-box">
+    <p><strong>Corronsac</strong> est une commune de la couronne périurbaine sud de Toulouse, dans la plaine agricole du Lauragais. Longtemps préservée de l'urbanisation, elle connaît depuis les années 2000 une pression foncière croissante liée à l'attractivité de la métropole toulousaine, dont elle est distante d'environ 15 km. Ce phénomène d'étalement urbain génère des tensions majeures entre développement résidentiel, maintien des activités agricoles et préservation de la biodiversité.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div><span class="tl-year">Avant 1975</span><p class="tl-text">Village agricole stable, environ 200 habitants. Économie tournée vers les grandes cultures céréalières du Lauragais.</p></div>
+    <div class="tl-item"><div class="tl-dot"></div><span class="tl-year">1975–1999</span><p class="tl-text">Premiers lotissements pavillonnaires. L'essor de la voiture et de l'autoroute A66 ouvre la commune aux actifs toulousains.</p></div>
+    <div class="tl-item"><div class="tl-dot"></div><span class="tl-year">2000–2010</span><p class="tl-text">Forte accélération : +45% de population. Construction de nombreuses maisons individuelles sur d'anciennes terres agricoles.</p></div>
+    <div class="tl-item"><div class="tl-dot"></div><span class="tl-year">2010–2020</span><p class="tl-text">Le PLU communal tente de limiter l'extension des zones U. Mais la pression reste forte ; le foncier est très convoité.</p></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--c-warn)"></div><span class="tl-year">2020–2024</span><p class="tl-text">Intégration au SCoT de la grande agglomération toulousaine. Objectif : zéro artificialisation nette (ZAN) à l'horizon 2050.</p></div>
+  </div>
+  <div class="analysis-box warn">
+    <p><strong>Enjeu central :</strong> La loi Climat et Résilience (2021) impose la division par deux du rythme d'artificialisation des sols d'ici 2031 et le ZAN en 2050. Corronsac doit repenser son modèle de développement tout en répondant à une demande résidentielle persistante.</p>
+  </div>
+</div>
+
+<!-- TERRITOIRE -->
+<div class="section" id="sec-territoire">
+  <div class="section-label">Analyse spatiale</div>
+  <h2>Le territoire corronsacois</h2>
+  <div class="divider"></div>
+  <p class="lead">Une commune de 1 150 habitants sur 1 470 ha, à la croisée entre agriculture intensive du Lauragais et urbanisation diffuse.</p>
+
+  <div class="card-grid">
+    <div class="stat-card forest"><div class="lbl">Superficie</div><div class="val">14,7 km²</div><div class="trend">Dont 68% agricole</div></div>
+    <div class="stat-card sky"><div class="lbl">Altitude</div><div class="val">200–350 m</div><div class="trend">Relief de coteaux</div></div>
+    <div class="stat-card earth"><div class="lbl">Distance Toulouse</div><div class="val">~15 km</div><div class="trend">Accès A66 + D2</div></div>
+    <div class="stat-card warn"><div class="lbl">EPCI</div><div class="val" style="font-size:1.1rem;margin-top:.3rem">SCoT GAT</div><div class="trend">Grande Agglo Toulouse</div></div>
+  </div>
+
+  <div class="map-block">
+    <div class="map-header"><span class="map-title">Localisation de Corronsac dans l'aire urbaine de Toulouse</span><span class="map-year">Carte de situation</span></div>
+    <div class="map-area">
+      <svg viewBox="0 0 580 340" width="100%" style="max-width:580px" role="img" aria-label="Carte de situation de Corronsac dans l'aire urbaine toulousaine">
+        <title>Corronsac dans l'aire urbaine de Toulouse</title>
+        <rect width="580" height="340" fill="#f0f4f0" rx="4"/>
+        <!-- Garonne stylisée -->
+        <path d="M20,80 Q120,60 200,100 Q280,140 350,120 Q420,100 500,130 Q540,145 580,140" stroke="#4ea8de" stroke-width="5" fill="none" opacity=".5"/>
+        <text x="180" y="58" font-size="9" fill="#1a6fb0" font-weight="600" opacity=".7">Garonne</text>
+        <!-- Aire métropolitaine (ovale) -->
+        <ellipse cx="230" cy="155" rx="140" ry="110" fill="#e8f5e9" stroke="#2d6a4f" stroke-width="1.5" opacity=".7"/>
+        <!-- Toulouse centre -->
+        <circle cx="210" cy="140" r="22" fill="#2d6a4f" opacity=".9"/>
+        <text x="210" y="144" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">TOULOUSE</text>
+        <!-- Communes périurbaines -->
+        <circle cx="265" cy="90" r="9" fill="#52b788" opacity=".8"/><text x="265" y="78" text-anchor="middle" font-size="8" fill="#2d6a4f">Castanet</text>
+        <circle cx="155" cy="85" r="8" fill="#52b788" opacity=".8"/><text x="155" y="73" text-anchor="middle" font-size="8" fill="#2d6a4f">Portet</text>
+        <circle cx="290" cy="175" r="9" fill="#52b788" opacity=".8"/><text x="310" y="179" font-size="8" fill="#2d6a4f">Labège</text>
+        <circle cx="155" cy="200" r="7" fill="#52b788" opacity=".8"/><text x="140" y="215" font-size="8" fill="#2d6a4f">Roques</text>
+        <!-- Corronsac plus loin -->
+        <circle cx="360" cy="250" r="13" fill="#b45309" opacity=".9" stroke="#fff" stroke-width="2"/>
+        <text x="360" y="254" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">CORRONSAC</text>
+        <!-- Trait distance -->
+        <line x1="210" y1="155" x2="355" y2="245" stroke="#b45309" stroke-width="1.5" stroke-dasharray="5,3" opacity=".7"/>
+        <text x="270" y="210" text-anchor="middle" font-size="9" fill="#b45309" font-weight="600" transform="rotate(-28 270 210)">~15 km</text>
+        <!-- A66 -->
+        <path d="M190,165 Q270,210 355,245 Q400,265 440,270" stroke="#f59e0b" stroke-width="3.5" fill="none" opacity=".9"/>
+        <text x="445" y="268" font-size="9" fill="#b45309" font-weight="700">A66</text>
+        <!-- Zone agricole Lauragais -->
+        <rect x="350" y="230" width="200" height="100" rx="4" fill="#d8f3dc" opacity=".4"/>
+        <text x="430" y="310" text-anchor="middle" font-size="9" fill="#2d6a4f" font-style="italic">Plaine du Lauragais</text>
+        <!-- Légende -->
+        <rect x="10" y="270" width="170" height="65" rx="5" fill="rgba(255,255,255,.85)"/>
+        <circle cx="27" cy="286" r="7" fill="#2d6a4f"/><text x="40" y="290" font-size="9" fill="#1c1917">Pôle urbain</text>
+        <circle cx="27" cy="302" r="6" fill="#52b788"/><text x="40" y="306" font-size="9" fill="#1c1917">Commune périurbaine</text>
+        <circle cx="27" cy="318" r="7" fill="#b45309"/><text x="40" y="322" font-size="9" fill="#1c1917">Corronsac (étude)</text>
+        <path d="M18,328 L36,328" stroke="#f59e0b" stroke-width="3"/><text x="40" y="332" font-size="9" fill="#1c1917">Autoroute A66</text>
+      </svg>
+    </div>
+  </div>
+
+  <h3>Morphologie du territoire</h3>
+  <div class="map-block">
+    <div class="map-header"><span class="map-title">Occupation du sol schématique — commune de Corronsac</span><span class="map-year">Source : Corine Land Cover / PLU</span></div>
+    <div class="map-area">
+      <svg viewBox="0 0 520 320" width="100%" style="max-width:520px" role="img" aria-label="Occupation du sol de Corronsac — zones agricoles, urbaines et naturelles">
+        <title>Morphologie territoriale de Corronsac</title>
+        <rect width="520" height="320" fill="#f5f0e8" rx="4"/>
+        <!-- Grandes cultures -->
+        <rect x="10" y="10" width="200" height="145" rx="4" fill="#c9a87c" opacity=".6"/>
+        <text x="105" y="88" text-anchor="middle" font-size="10" fill="#5c3d1e" font-weight="600">Grandes cultures</text>
+        <text x="105" y="102" text-anchor="middle" font-size="9" fill="#7a5230">(céréales, oléagineux)</text>
+        <!-- Zone humide / boisée -->
+        <path d="M10,155 Q40,140 80,158 Q120,175 150,155 L150,250 Q120,260 80,250 Q40,255 10,240 Z" fill="#52b788" opacity=".45"/>
+        <text x="80" y="210" text-anchor="middle" font-size="9" fill="#1a5c38" font-weight="600">Zone boisée</text>
+        <text x="80" y="222" text-anchor="middle" font-size="9" fill="#2d7a4f">& ripisylve</text>
+        <!-- Tissu pavillonnaire nord -->
+        <rect x="215" y="10" width="140" height="100" rx="4" fill="#d4b896" opacity=".7"/>
+        <text x="285" y="58" text-anchor="middle" font-size="10" fill="#5c3d1e" font-weight="600">Lotissements</text>
+        <text x="285" y="72" text-anchor="middle" font-size="9" fill="#7a5230">récents (2000-2020)</text>
+        <!-- Bourg ancien -->
+        <rect x="225" y="118" width="85" height="70" rx="5" fill="#e07b39" opacity=".7"/>
+        <text x="268" y="157" text-anchor="middle" font-size="9" fill="#fff" font-weight="700">Bourg ancien</text>
+        <!-- Zone extension projetée -->
+        <rect x="315" y="118" width="80" height="70" rx="5" fill="#ef4444" opacity=".2" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,3"/>
+        <text x="355" y="148" text-anchor="middle" font-size="8" fill="#991b1b" font-weight="600">Extension</text>
+        <text x="355" y="160" text-anchor="middle" font-size="8" fill="#991b1b">projetée</text>
+        <!-- Terres agricoles est -->
+        <rect x="400" y="10" width="110" height="230" rx="4" fill="#c9a87c" opacity=".5"/>
+        <text x="455" y="128" text-anchor="middle" font-size="9" fill="#5c3d1e">Terres</text>
+        <text x="455" y="140" text-anchor="middle" font-size="9" fill="#5c3d1e">agricoles</text>
+        <!-- Cours d'eau -->
+        <path d="M160,290 Q200,270 240,280 Q280,290 320,275 Q360,260 400,265" stroke="#4ea8de" stroke-width="3.5" fill="none"/>
+        <text x="280" y="308" text-anchor="middle" font-size="9" fill="#1a6fb0" font-style="italic">Ruisseau du Saudrune</text>
+        <!-- Zones humides -->
+        <ellipse cx="300" cy="240" rx="45" ry="25" fill="#a8d8ea" opacity=".5" stroke="#4ea8de" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="300" y="244" text-anchor="middle" font-size="8" fill="#1a6fb0">Zone humide</text>
+        <!-- Route principale -->
+        <path d="M10,200 Q80,195 160,200 Q240,205 300,195 Q380,185 520,190" stroke="#888" stroke-width="2.5" fill="none"/>
+        <text x="490" y="182" font-size="8" fill="#555">RD2</text>
+        <!-- Légende -->
+        <rect x="160" y="255" width="220" height="62" rx="5" fill="rgba(255,255,255,.9)"/>
+        <rect x="168" y="264" width="10" height="10" rx="2" fill="#c9a87c" opacity=".8"/>
+        <text x="183" y="273" font-size="8" fill="#1c1917">Terres agricoles</text>
+        <rect x="168" y="280" width="10" height="10" rx="2" fill="#52b788" opacity=".7"/>
+        <text x="183" y="289" font-size="8" fill="#1c1917">Espaces naturels</text>
+        <rect x="168" y="296" width="10" height="10" rx="2" fill="#d4b896" opacity=".8"/>
+        <text x="183" y="305" font-size="8" fill="#1c1917">Tissu urbain</text>
+        <rect x="280" y="264" width="10" height="10" rx="2" fill="#ef4444" opacity=".3" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="295" y="273" font-size="8" fill="#991b1b">Zone extension</text>
+        <rect x="280" y="280" width="10" height="10" rx="2" fill="#a8d8ea" opacity=".8"/>
+        <text x="295" y="289" font-size="8" fill="#1a6fb0">Zones humides</text>
+      </svg>
+    </div>
+  </div>
+  <p style="font-size:.82rem;color:var(--c-muted);text-align:center;margin-top:.3rem">Carte schématique réalisée d'après les données PLU, Corine Land Cover et photo-interprétation IGN</p>
+</div>
+
+<!-- DEMO -->
+<div class="section" id="sec-demo">
+  <div class="section-label">Analyse démographique</div>
+  <h2>Dynamiques de population</h2>
+  <div class="divider"></div>
+  <p class="lead">Corronsac a vu sa population multipliée par 5 en 50 ans, passant de ~220 habitants en 1975 à plus de 1 150 aujourd'hui.</p>
+  <div class="card-grid">
+    <div class="stat-card danger"><div class="lbl">Population 2021</div><div class="val">1 152</div><div class="trend" style="color:var(--c-danger)">+420% depuis 1975</div></div>
+    <div class="stat-card warn"><div class="lbl">Croissance ann. (2011-21)</div><div class="val">+1,8%</div><div class="trend">France : +0,3%/an</div></div>
+    <div class="stat-card sky"><div class="lbl">Ménages</div><div class="val">458</div><div class="trend">Taille moy. 2,5 pers.</div></div>
+    <div class="stat-card earth"><div class="lbl">Part résid. princ.</div><div class="val">91%</div><div class="trend">Peu de résid. second.</div></div>
+  </div>
+  <div class="chart-wrap" style="height:240px">
+    <canvas id="chartPop" role="img" aria-label="Évolution de la population de Corronsac de 1975 à 2021">Données: 1975:220, 1982:310, 1990:450, 1999:680, 2007:870, 2012:1020, 2017:1090, 2021:1152</canvas>
+  </div>
+  <div class="legend-row" style="justify-content:center">
+    <span class="leg-item"><span class="leg-dot" style="background:#2d6a4f"></span>Population totale</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#f59e0b;border:1px dashed #b45309"></span>Tendance nationale</span>
+  </div>
+  <div class="analysis-box">
+    <p>La croissance de Corronsac est portée par un <strong>solde migratoire très excédentaire</strong> : des familles actives quittent Toulouse et sa proche banlieue pour accéder à la propriété. Ce profil — ménages avec enfants, propriétaires de maisons individuelles avec jardin — génère une forte dépendance à l'automobile et une demande croissante en équipements (écoles, commerces, transports).</p>
+  </div>
+  <h3>Structure de la population (2021)</h3>
+  <div class="chart-wrap" style="height:200px">
+    <canvas id="chartAge" role="img" aria-label="Pyramide simplifiée des âges à Corronsac en 2021">Données: moins de 15 ans: 22%, 15-29 ans: 11%, 30-44 ans: 25%, 45-59 ans: 22%, 60-74 ans: 14%, 75 ans et plus: 6%</canvas>
+  </div>
+  <div class="analysis-box sky">
+    <p>La surreprésentation des <strong>30-44 ans</strong> (familles en cours d'installation) et des <strong>moins de 15 ans</strong> confirme le profil "résidentiel de première accession". À terme, ce vieillissement progressif fera peser de nouvelles charges sur les services communaux (dépendance, mobilité douce).</p>
+  </div>
+</div>
+
+<!-- OCCUPATION SOL -->
+<div class="section" id="sec-occupation">
+  <div class="section-label">Analyse de l'occupation du sol</div>
+  <h2>Mutations spatiales du territoire</h2>
+  <div class="divider"></div>
+  <p class="lead">Entre 2000 et 2020, Corronsac a perdu 142 hectares de terres agricoles et naturelles au profit de l'urbanisation.</p>
+
+  <div class="chart-wrap" style="height:260px">
+    <canvas id="chartOccSol" role="img" aria-label="Évolution de l'occupation du sol à Corronsac entre 2000 et 2020 par grande catégorie">Données comparées 2000 vs 2020: Terres agricoles, Espaces naturels, Tissu urbain, Voiries et imperméabilisé</canvas>
+  </div>
+  <div class="legend-row" style="justify-content:center">
+    <span class="leg-item"><span class="leg-dot" style="background:#c9a87c"></span>Terres agricoles</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#52b788"></span>Espaces naturels</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#e07b39"></span>Tissu urbain</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#888780"></span>Voiries/imperméabilisé</span>
+  </div>
+
+  <div class="card-grid" style="margin-top:1.5rem">
+    <div class="stat-card danger"><div class="lbl">Terres agricoles perdues</div><div class="val">-142 ha</div><div class="trend" style="color:var(--c-danger)">-14% en 20 ans</div></div>
+    <div class="stat-card danger"><div class="lbl">Espaces naturels perdus</div><div class="val">-38 ha</div><div class="trend" style="color:var(--c-danger)">-18% en 20 ans</div></div>
+    <div class="stat-card warn"><div class="lbl">Surface urbanisée nette</div><div class="val">+180 ha</div><div class="trend" style="color:var(--c-warn)">+9 ha/an en moy.</div></div>
+    <div class="stat-card sky"><div class="lbl">Taux imperméabilisation</div><div class="val">23%</div><div class="trend">Contre 14% en 2000</div></div>
+  </div>
+
+  <h3>Cartographie du changement d'usage des sols</h3>
+  <div class="map-block">
+    <div class="map-header"><span class="map-title">Évolution de l'artificialisation (2000–2020)</span><span class="map-year">Source : Corine Land Cover / IGN-BDTOPO</span></div>
+    <div class="map-area">
+      <svg viewBox="0 0 540 320" width="100%" style="max-width:540px" role="img" aria-label="Carte d'évolution de l'artificialisation des sols à Corronsac entre 2000 et 2020">
+        <title>Carte d'artificialisation des sols 2000-2020 Corronsac</title>
+        <rect width="540" height="320" fill="#f5f0e8" rx="4"/>
+        <!-- Fond agricole -->
+        <rect x="0" y="0" width="540" height="320" fill="#e8dcc8" rx="4"/>
+        <!-- Zones stable naturel -->
+        <path d="M10,150 Q50,130 90,155 Q120,170 145,150 L145,240 Q100,255 60,240 Q30,235 10,225 Z" fill="#52b788" opacity=".5"/>
+        <!-- Ancien tissu urbain 2000 (beige) -->
+        <rect x="210" y="100" width="75" height="65" rx="5" fill="#d4b896" opacity=".8"/>
+        <text x="248" y="133" text-anchor="middle" font-size="8" fill="#5c3d1e" font-weight="600">Centre 2000</text>
+        <!-- Nouvelles zones urbanisées 2000-2010 (orange foncé) -->
+        <rect x="210" y="50" width="95" height="48" rx="4" fill="#d97706" opacity=".55"/>
+        <text x="258" y="78" text-anchor="middle" font-size="8" fill="#fff" font-weight="600">Extension 2000-10</text>
+        <!-- Nouvelles zones urbanisées 2010-2020 (rouge) -->
+        <rect x="285" y="100" width="85" height="58" rx="4" fill="#dc2626" opacity=".5"/>
+        <text x="328" y="133" text-anchor="middle" font-size="8" fill="#fff" font-weight="600">Extension 2010-20</text>
+        <!-- Zone humide menacée -->
+        <ellipse cx="340" cy="220" rx="50" ry="28" fill="#93c5fd" opacity=".5" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="340" y="215" text-anchor="middle" font-size="8" fill="#1d4ed8" font-weight="600">Zone humide</text>
+        <text x="340" y="226" text-anchor="middle" font-size="8" fill="#1d4ed8">⚠ menacée</text>
+        <!-- Terres perdues hachurées -->
+        <rect x="380" y="50" width="140" height="180" rx="4" fill="none" stroke="#dc2626" stroke-width="1" stroke-dasharray="6,4" opacity=".5"/>
+        <text x="450" y="145" text-anchor="middle" font-size="8" fill="#991b1b">Terres agri.</text>
+        <text x="450" y="157" text-anchor="middle" font-size="8" fill="#991b1b">à risque</text>
+        <!-- Cours d'eau -->
+        <path d="M150,280 Q200,260 260,270 Q310,278 360,262 Q410,248 480,255" stroke="#4ea8de" stroke-width="3" fill="none"/>
+        <!-- Flèches pression -->
+        <path d="M500,130 L420,160" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+        <path d="M490,80 L390,90" stroke="#dc2626" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+        <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 Z" fill="#dc2626"/></marker></defs>
+        <text x="480" y="120" font-size="8" fill="#dc2626" font-weight="600">Pression</text>
+        <text x="480" y="131" font-size="8" fill="#dc2626">urbaine</text>
+        <!-- Légende -->
+        <rect x="10" y="255" width="155" height="60" rx="4" fill="rgba(255,255,255,.9)"/>
+        <rect x="18" y="263" width="10" height="10" rx="2" fill="#d4b896"/><text x="33" y="272" font-size="8" fill="#1c1917">Tissu urbain existant 2000</text>
+        <rect x="18" y="278" width="10" height="10" rx="2" fill="#d97706" opacity=".7"/><text x="33" y="287" font-size="8" fill="#1c1917">Urbanisation 2000-2010</text>
+        <rect x="18" y="293" width="10" height="10" rx="2" fill="#dc2626" opacity=".6"/><text x="33" y="302" font-size="8" fill="#1c1917">Urbanisation 2010-2020</text>
+      </svg>
+    </div>
+  </div>
+  <div class="analysis-box warn">
+    <p>La lecture diachronique de l'occupation du sol révèle un phénomène de <strong>"consommation annulaire"</strong> : l'urbanisation progresse de manière concentrique depuis le bourg historique, grignotant d'abord les terres les plus proches, puis se déportant vers des secteurs de plus en plus éloignés et écologiquement sensibles. Le rythme moyen de +9 ha/an est 3× supérieur au seuil compatible avec l'objectif ZAN 2050.</p>
+  </div>
+</div>
+
+<!-- RISQUES -->
+<div class="section" id="sec-risques">
+  <div class="section-label">Analyse environnementale</div>
+  <h2>Risques et pressions environnementales</h2>
+  <div class="divider"></div>
+  <p class="lead">L'urbanisation génère une cascade de pressions sur les écosystèmes locaux : fragmentation des habitats, imperméabilisation, dégradation des cours d'eau, émissions de GES.</p>
+
+  <h3>Indicateurs de pression sur les milieux naturels</h3>
+  <div class="pression-bar">
+    <div class="pb-row"><span class="pb-label">Imperméabilisation</span><div class="pb-track"><div class="pb-fill" style="width:75%;background:#dc2626"></div></div><span class="pb-val" style="color:#dc2626">75%</span></div>
+    <div class="pb-row"><span class="pb-label">Fragmentation haies</span><div class="pb-track"><div class="pb-fill" style="width:62%;background:#f59e0b"></div></div><span class="pb-val" style="color:#f59e0b">62%</span></div>
+    <div class="pb-row"><span class="pb-label">Pression sur zones humides</span><div class="pb-track"><div class="pb-fill" style="width:58%;background:#dc2626"></div></div><span class="pb-val" style="color:#dc2626">58%</span></div>
+    <div class="pb-row"><span class="pb-label">Trafic routier +2km réseau</span><div class="pb-track"><div class="pb-fill" style="width:85%;background:#dc2626"></div></div><span class="pb-val" style="color:#dc2626">85%</span></div>
+    <div class="pb-row"><span class="pb-label">Consommation eau potable</span><div class="pb-track"><div class="pb-fill" style="width:68%;background:#f59e0b"></div></div><span class="pb-val" style="color:#f59e0b">68%</span></div>
+    <div class="pb-row"><span class="pb-label">Préservation trame verte</span><div class="pb-track"><div class="pb-fill" style="width:34%;background:#2d6a4f"></div></div><span class="pb-val" style="color:#2d6a4f">34%</span></div>
+  </div>
+  <p style="font-size:.78rem;color:var(--c-muted);margin-top:.3rem">Indice de pression normalisé (0-100%) calculé d'après EPCI / DREAL Occitanie / données PLU. 34% = seuls 34% de la TVB initiale sont encore préservés.</p>
+
+  <h3>Matrice de risque environnemental</h3>
+  <div class="risk-matrix">
+    <div class="risk-cell high"><div class="rt">Inondations / ruissellement</div>L'imperméabilisation aggrave les crues éclair du Saudrune. 3 épisodes majeurs depuis 2010.</div>
+    <div class="risk-cell high"><div class="rt">Érosion biodiversité</div>Destruction d'habitats d'espèces protégées (chevêche d'Athéna, crapaud calamite).</div>
+    <div class="risk-cell med"><div class="rt">Qualité des eaux</div>Pesticides agricoles + eaux de ruissellement urbaines menacent la nappe phréatique.</div>
+    <div class="risk-cell med"><div class="rt">Émissions CO₂ mobilité</div>85% des actifs utilisent la voiture solo Corronsac-Toulouse. Bilan carbone très défavorable.</div>
+    <div class="risk-cell med"><div class="rt">Pression sur l'agriculture</div>Hausse du prix du foncier : les exploitants sont incités à vendre. 2 fermes ont disparu en 10 ans.</div>
+    <div class="risk-cell low"><div class="rt">Ressource en eau potable</div>La nappe alluviale reste pour l'instant suffisante, mais sous surveillance du SAGE Hers-Mort.</div>
+  </div>
+
+  <div class="map-block" style="margin-top:1.5rem">
+    <div class="map-header"><span class="map-title">Trame verte et bleue — corridors écologiques</span><span class="map-year">Source : SRCE Occitanie / PLU</span></div>
+    <div class="map-area">
+      <svg viewBox="0 0 540 300" width="100%" style="max-width:540px" role="img" aria-label="Carte des corridors écologiques TVB de Corronsac">
+        <title>Trame verte et bleue de Corronsac</title>
+        <rect width="540" height="300" fill="#f0f4ec" rx="4"/>
+        <!-- Réservoirs de biodiversité -->
+        <ellipse cx="80" cy="100" rx="55" ry="40" fill="#2d6a4f" opacity=".3"/>
+        <text x="80" y="103" text-anchor="middle" font-size="8" fill="#1a4a30" font-weight="600">Réservoir NW</text>
+        <ellipse cx="460" cy="80" rx="45" ry="35" fill="#2d6a4f" opacity=".3"/>
+        <text x="460" y="83" text-anchor="middle" font-size="8" fill="#1a4a30" font-weight="600">Réservoir NE</text>
+        <ellipse cx="80" cy="240" rx="55" ry="35" fill="#2d6a4f" opacity=".3"/>
+        <text x="80" y="243" text-anchor="middle" font-size="8" fill="#1a4a30" font-weight="600">Réservoir SW</text>
+        <ellipse cx="460" cy="240" rx="50" ry="35" fill="#2d6a4f" opacity=".3"/>
+        <text x="460" y="243" text-anchor="middle" font-size="8" fill="#1a4a30" font-weight="600">Réservoir SE</text>
+        <!-- Corridors verts fonctionnels -->
+        <path d="M130,100 Q200,90 260,95 Q310,100 415,80" stroke="#52b788" stroke-width="12" fill="none" opacity=".3"/>
+        <path d="M130,100 Q160,150 155,200 Q153,225 130,240" stroke="#52b788" stroke-width="10" fill="none" opacity=".25"/>
+        <!-- Corridors fragmentés -->
+        <path d="M415,80 Q430,150 415,240" stroke="#f59e0b" stroke-width="8" fill="none" opacity=".35" stroke-dasharray="12,6"/>
+        <path d="M130,240 Q250,255 300,248 Q360,242 415,240" stroke="#f59e0b" stroke-width="8" fill="none" opacity=".35" stroke-dasharray="12,6"/>
+        <!-- Trame bleue -->
+        <path d="M50,170 Q150,155 260,165 Q360,175 500,160" stroke="#4ea8de" stroke-width="5" fill="none" opacity=".7"/>
+        <text x="270" y="152" text-anchor="middle" font-size="8" fill="#1a6fb0" font-style="italic">Saudrune</text>
+        <!-- Zone urbaine au centre (obstacle) -->
+        <rect x="240" y="105" width="130" height="100" rx="6" fill="#e07b39" opacity=".35"/>
+        <text x="305" y="158" text-anchor="middle" font-size="9" fill="#8b3a0a" font-weight="600">Zone urbaine</text>
+        <text x="305" y="170" text-anchor="middle" font-size="8" fill="#8b3a0a">= obstacle éco.</text>
+        <!-- Ruptures -->
+        <line x1="258" y1="93" x2="242" y2="107" stroke="#dc2626" stroke-width="2.5"/>
+        <line x1="242" y1="93" x2="258" y2="107" stroke="#dc2626" stroke-width="2.5"/>
+        <line x1="368" y1="143" x2="382" y2="157" stroke="#dc2626" stroke-width="2.5"/>
+        <line x1="382" y1="143" x2="368" y2="157" stroke="#dc2626" stroke-width="2.5"/>
+        <!-- Légende -->
+        <rect x="10" y="10" width="175" height="75" rx="5" fill="rgba(255,255,255,.9)"/>
+        <rect x="18" y="19" width="20" height="8" rx="3" fill="#52b788" opacity=".6"/><text x="44" y="27" font-size="8" fill="#1c1917">Corridor fonctionnel</text>
+        <rect x="18" y="33" width="20" height="8" rx="3" fill="#f59e0b" opacity=".5"/><text x="44" y="41" font-size="8" fill="#1c1917">Corridor fragmenté</text>
+        <path d="M18,55 L38,55" stroke="#4ea8de" stroke-width="3"/><text x="44" y="59" font-size="8" fill="#1c1917">Trame bleue</text>
+        <circle cx="18" cy="69" r="5" fill="#2d6a4f" opacity=".5"/><text x="44" y="73" font-size="8" fill="#1c1917">Réservoir biodiversité</text>
+        <text x="27" y="83" font-size="8" fill="#dc2626" font-weight="700">✕ = rupture de corridor</text>
+      </svg>
+    </div>
+  </div>
+  <div class="analysis-box danger">
+    <p>L'analyse TVB révèle une <strong>fragmentation croissante des corridors écologiques</strong>. La tache urbaine centrale coupe désormais deux corridors est-ouest majeurs, isolant les réservoirs de biodiversité NE et SE. Cette rupture est particulièrement préoccupante pour les espèces à faible capacité de déplacement (amphibiens, hérissons, reptiles). Le maintien de passages à faune sous la RD2 est une priorité absolue.</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="section" id="sec-dashboard">
+  <div class="section-label">Tableau de bord synthétique</div>
+  <h2>Dashboard territorial</h2>
+  <div class="divider"></div>
+  <p class="lead">Synthèse des indicateurs clés de développement durable de la commune de Corronsac (données 2021-2024).</p>
+
+  <div class="card-grid">
+    <div class="stat-card danger"><div class="lbl">Artificialisation annuelle</div><div class="val">+9 ha</div><div class="trend" style="color:var(--c-danger)">Objectif ZAN : –50% d'ici 2031</div></div>
+    <div class="stat-card warn"><div class="lbl">Part voiture modale</div><div class="val">87%</div><div class="trend" style="color:var(--c-warn)">Moy. pér. TOL : 82%</div></div>
+    <div class="stat-card forest"><div class="lbl">SAU préservée</div><div class="val">862 ha</div><div class="trend" style="color:var(--c-forest)">-14% depuis 2000</div></div>
+    <div class="stat-card sky"><div class="lbl">Indice biodiversité</div><div class="val">38/100</div><div class="trend" style="color:var(--c-sky)">En baisse depuis 2010</div></div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div>
+      <div style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--c-muted);margin-bottom:.5rem">Bilan énergétique & carbone</div>
+      <div class="chart-wrap" style="height:180px">
+        <canvas id="chartCarbone" role="img" aria-label="Bilan carbone par secteur à Corronsac: mobilité, logement, agriculture, déchets">Mobilité 68%, Logement 18%, Agriculture 9%, Déchets 5%</canvas>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--c-muted);margin-bottom:.5rem">Logements par type (2021)</div>
+      <div class="chart-wrap" style="height:180px">
+        <canvas id="chartLogement" role="img" aria-label="Répartition des logements à Corronsac: maisons individuelles 89%, appartements 8%, autres 3%">Maisons 89%, Appartements 8%, Autres 3%</canvas>
+      </div>
+    </div>
+  </div>
+
+  <h3>Suivi ZAN — trajectoire d'artificialisation</h3>
+  <div class="chart-wrap" style="height:220px">
+    <canvas id="chartZAN" role="img" aria-label="Comparaison de la trajectoire réelle d'artificialisation de Corronsac versus l'objectif ZAN">Trajectoire réelle vs objectif légal 2021-2050</canvas>
+  </div>
+  <div class="legend-row" style="justify-content:center">
+    <span class="leg-item"><span class="leg-dot" style="background:#dc2626"></span>Trajectoire actuelle</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#2d6a4f;border:1px dashed #1a4a2e"></span>Objectif ZAN (loi 2021)</span>
+  </div>
+  <div class="analysis-box danger">
+    <p>Si le rythme d'artificialisation actuel (+9 ha/an) est maintenu, Corronsac aura consommé <strong>~180 ha supplémentaires</strong> d'ici 2030, soit près du triple du quota autorisé par la loi Climat et Résilience. Un retournement radical de la politique foncière communale est impératif.</p>
+  </div>
+
+  <h3>Profil de durabilité communale</h3>
+  <div class="chart-wrap" style="height:240px">
+    <canvas id="chartRadar" role="img" aria-label="Graphique radar du profil de durabilité de Corronsac sur 6 dimensions: mobilité, logement, biodiversité, agriculture, eau, gouvernance">6 axes: mobilité durable, mixité logement, biodiversité, agriculture, eau, gouvernance</canvas>
+  </div>
+</div>
+
+<!-- SCENARIOS -->
+<div class="section" id="sec-scenarios">
+  <div class="section-label">Prospective territoriale</div>
+  <h2>Scénarios d'évolution à 2040</h2>
+  <div class="divider"></div>
+  <p class="lead">Trois trajectoires de développement sont envisageables pour Corronsac à l'horizon 2040. Elles impliquent des choix politiques, fonciers et sociaux distincts.</p>
+
+  <div class="scenario-tabs">
+    <button class="sc-btn active" onclick="showScenario('fil')">Fil de l'eau</button>
+    <button class="sc-btn" onclick="showScenario('dense')">Densification maîtrisée</button>
+    <button class="sc-btn" onclick="showScenario('zan')">ZAN territorial</button>
+  </div>
+
+  <div class="scenario-content visible" id="sc-fil">
+    <strong style="color:#dc2626">⚠ Scénario tendanciel — Fil de l'eau</strong>
+    <p style="margin-top:.6rem">Le rythme d'urbanisation actuel se poursuit (+9 ha/an). La population atteint 1 500-1 600 habitants en 2040. Les dernières terres agricoles du nord-est communal sont urbanisées. Les corridors écologiques NE et SE sont définitivement rompus. Les inondations se répètent. La commune dépasse largement ses quotas ZAN et s'expose à un contentieux juridique avec l'État et le SCoT. Le coût des infrastructures (eaux pluviales, voirie, école) s'emballe. Ce scénario conduit à une banalisation du territoire et à la perte de son identité lauragaise.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1rem">
+      <div style="background:#fee2e2;border-radius:8px;padding:.7rem;font-size:.8rem;color:#991b1b"><strong>Surfaces perdues</strong><br>+180 ha agricoles/nat.</div>
+      <div style="background:#fee2e2;border-radius:8px;padding:.7rem;font-size:.8rem;color:#991b1b"><strong>Risque inondation</strong><br>Très fort (×2,4 events)</div>
+      <div style="background:#fef3c7;border-radius:8px;padding:.7rem;font-size:.8rem;color:#92400e"><strong>Population 2040</strong><br>~1 580 hab. (+37%)</div>
+      <div style="background:#fef3c7;border-radius:8px;padding:.7rem;font-size:.8rem;color:#92400e"><strong>Contentieux ZAN</strong><br>Probable dès 2028</div>
+    </div>
+  </div>
+
+  <div class="scenario-content" id="sc-dense">
+    <strong style="color:#b45309">⚙ Scénario intermédiaire — Densification maîtrisée</strong>
+    <p style="margin-top:.6rem">La commune recentre l'urbanisation sur le bourg existant (densification douce : division parcellaire, logements intermédiaires). L'extension sur des terres vierges est stoppée. Les 862 ha de SAU sont intégralement classés en zone A inconstructible dans le PLU. Un plan de mobilité communal promeut le covoiturage et les liaisons douces vers la gare de Ramonville. La population croît modérément (+15% d'ici 2040). Ce scénario est compatible avec l'objectif ZAN 2031 et préserve l'essentiel des corridors écologiques.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1rem">
+      <div style="background:#dcfce7;border-radius:8px;padding:.7rem;font-size:.8rem;color:#166534"><strong>SAU préservée</strong><br>860 ha maintenus</div>
+      <div style="background:#dcfce7;border-radius:8px;padding:.7rem;font-size:.8rem;color:#166534"><strong>Conformité ZAN</strong><br>Atteinte dès 2028</div>
+      <div style="background:#fef3c7;border-radius:8px;padding:.7rem;font-size:.8rem;color:#92400e"><strong>Population 2040</strong><br>~1 320 hab. (+15%)</div>
+      <div style="background:#fef3c7;border-radius:8px;padding:.7rem;font-size:.8rem;color:#92400e"><strong>Transition mobilité</strong><br>Partielle (–25% voiture)</div>
+    </div>
+  </div>
+
+  <div class="scenario-content" id="sc-zan">
+    <strong style="color:#2d6a4f">🌿 Scénario vertueux — ZAN territorial intégral</strong>
+    <p style="margin-top:.6rem">Corronsac s'engage dans une stratégie de sobriété foncière totale. Les quelques dents creuses disponibles sont densifiées, mais aucune extension n'est autorisée. La commune s'inscrit dans le projet "Ceinture verte de Toulouse" : 200 ha reclassés en zone agricole et écologique font l'objet d'un Projet Alimentaire Territorial. Des haies bocagères sont replantées le long des corridors. Un programme de renaturation des bords du Saudrune est conduit avec l'agence de l'eau. La commune devient un modèle de transition périurbaine à l'échelle régionale.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1rem">
+      <div style="background:#dcfce7;border-radius:8px;padding:.7rem;font-size:.8rem;color:#166534"><strong>Corridors restaurés</strong><br>TVB 80% fonctionnelle</div>
+      <div style="background:#dcfce7;border-radius:8px;padding:.7rem;font-size:.8rem;color:#166534"><strong>Bilan carbone</strong><br>–40% mobilité dès 2035</div>
+      <div style="background:#dbeafe;border-radius:8px;padding:.7rem;font-size:.8rem;color:#1e40af"><strong>Population 2040</strong><br>~1 180 hab. (stable)</div>
+      <div style="background:#dbeafe;border-radius:8px;padding:.7rem;font-size:.8rem;color:#1e40af"><strong>Label</strong><br>"Commune ZAN pilote"</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRECONISATIONS -->
+<div class="section" id="sec-preconisations">
+  <div class="section-label">Recommandations</div>
+  <h2>Préconisations d'aménagement</h2>
+  <div class="divider"></div>
+  <p class="lead">En cohérence avec les objectifs ZAN, les enjeux de biodiversité et les besoins locaux, six axes d'action prioritaires sont identifiés pour Corronsac.</p>
+
+  <div class="preconisation">
+    <div class="prec-num">1</div>
+    <div class="prec-text"><strong>Révision immédiate du PLU en faveur du zéro extension</strong><br>Reclasser toutes les zones 2AU (réserves à urbaniser) en zone N ou A. Inscrire les 862 ha de SAU dans une protection forte et pérenne. Engager la procédure de révision du PLU avec concertation publique d'ici fin 2025.</div>
+  </div>
+  <div class="preconisation">
+    <div class="prec-num">2</div>
+    <div class="prec-text"><strong>Programme de densification douce du bourg existant</strong><br>Encourager la division parcellaire et la réhabilitation du bâti vacant. Créer 50 à 80 logements intermédiaires (maisons de ville, petits collectifs R+2) sur les dents creuses, pour répondre à la demande sans consommer de nouvelles terres.</div>
+  </div>
+  <div class="preconisation">
+    <div class="prec-num">3</div>
+    <div class="prec-text"><strong>Restauration des corridors écologiques TVB</strong><br>Planter 8 km de haies bocagères sur les corridors fragmentés. Créer des passages à faune sous la RD2 (3 passages minimum). Contractualiser avec les exploitants agricoles via des mesures agro-environnementales (MAE).</div>
+  </div>
+  <div class="preconisation">
+    <div class="prec-num">4</div>
+    <div class="prec-text"><strong>Plan de mobilité communal décarboné</strong><br>Mettre en place une navette partagée quotidienne Corronsac–Labège (pôle multimodal métro B). Aménager une voie verte cyclable sécurisée de 4 km jusqu'à Castanet-Tolosan. Négocier avec Tisséo l'extension d'une ligne de bus à haut niveau de service.</div>
+  </div>
+  <div class="preconisation">
+    <div class="prec-num">5</div>
+    <div class="prec-text"><strong>Projet Alimentaire Territorial (PAT)</strong><br>Soutenir l'installation de 2 à 3 nouveaux agriculteurs en maraîchage biologique. Créer une AMAP (panier local) pour les habitants et les cantines scolaires. Relier Corronsac au projet ceinture verte de Toulouse Métropole.</div>
+  </div>
+  <div class="preconisation">
+    <div class="prec-num">6</div>
+    <div class="prec-text"><strong>Renaturation des bords du Saudrune</strong><br>Désimperméabiliser 2 ha de berges et restaurer la ripisylve sur 1,2 km. Créer un sentier pédagogique de découverte du milieu humide. Installer des noues filtrantes pour réduire les ruissellements urbains.</div>
+  </div>
+
+  <div class="analysis-box" style="margin-top:2rem">
+    <p><strong>Conclusion :</strong> Corronsac incarne les tensions qui traversent l'ensemble du périurbain toulousain — et français. Face à l'impératif du ZAN et à l'urgence climatique, la commune ne peut plus se développer à l'ancienne. Son avenir réside dans un modèle de <strong>sobriété foncière active</strong> : densifier intelligemment, restaurer les trames écologiques, réinventer la mobilité et valoriser l'agriculture péri-métropolitaine. Ce défi est aussi une opportunité de réinventer une identité propre, entre ville et campagne.</p>
+  </div>
+
+  <div class="footer-sm">
+    <p>Sources : INSEE RGP 2021 · Corine Land Cover 2000-2018 · BD Topo IGN · PLU Corronsac · SCoT GAT · SRCE Occitanie · DREAL Occitanie · Agence de l'eau Adour-Garonne · Géoportail</p>
+    <p style="margin-top:.3rem">Story-map réalisée dans le cadre du module SIG — M1 Géographie · Université Toulouse Jean Jaurès · 2025-2026</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));
+  document.getElementById('sec-'+id).classList.add('visible');
+  document.querySelectorAll('.sm-nav-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+function showScenario(id){
+  document.querySelectorAll('.scenario-content').forEach(s=>s.classList.remove('visible'));
+  document.getElementById('sc-'+id).classList.add('visible');
+  document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+const popData={labels:['1975','1982','1990','1999','2007','2012','2017','2021'],datasets:[{label:'Population',data:[220,310,450,680,870,1020,1090,1152],borderColor:'#2d6a4f',backgroundColor:'rgba(45,106,79,.12)',tension:.4,fill:true,pointBackgroundColor:'#2d6a4f',pointRadius:4},{label:'Tendance nationale (indice)',data:[220,228,238,250,265,274,280,286],borderColor:'#f59e0b',borderDash:[6,3],backgroundColor:'transparent',tension:.4,pointRadius:0}]};
+const popOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:t=>t[0].label,label:c=>'Pop : '+c.parsed.y+' hab.'}}},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}}}};
+new Chart(document.getElementById('chartPop'),{type:'line',data:popData,options:popOpts});
+
+new Chart(document.getElementById('chartAge'),{type:'bar',data:{labels:['< 15 ans','15-29 ans','30-44 ans','45-59 ans','60-74 ans','75 ans +'],datasets:[{label:'Part de la population',data:[22,11,25,22,14,6],backgroundColor:['#52b788','#a8d8ea','#2d6a4f','#52b788','#c9a87c','#d4b896'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>v+'%',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},y:{ticks:{font:{size:11}},grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartOccSol'),{type:'bar',data:{labels:['Terres agricoles','Espaces naturels','Tissu urbain','Voirie / imperméab.'],datasets:[{label:'2000 (ha)',data:[1004,211,185,70],backgroundColor:'rgba(201,168,124,.7)',borderRadius:4},{label:'2020 (ha)',data:[862,173,325,110],backgroundColor:['rgba(201,168,124,.35)','rgba(82,183,136,.4)','rgba(224,123,57,.7)','rgba(136,135,128,.6)'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Hectares',font:{size:11}}}}}});
+
+new Chart(document.getElementById('chartCarbone'),{type:'doughnut',data:{labels:['Mobilité','Logement','Agriculture','Déchets'],datasets:[{data:[68,18,9,5],backgroundColor:['#dc2626','#f59e0b','#2d6a4f','#888780'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+
+new Chart(document.getElementById('chartLogement'),{type:'doughnut',data:{labels:['Maisons individ.','Appartements','Autres'],datasets:[{data:[89,8,3],backgroundColor:['#e07b39','#4ea8de','#888780'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+
+const years=['2021','2023','2025','2027','2030','2035','2040','2050'];
+const actuel=[0,18,36,54,81,126,171,261];
+const zan=[0,9,15,20,27,30,32,32];
+new Chart(document.getElementById('chartZAN'),{type:'line',data:{labels:years,datasets:[{label:'Trajectoire actuelle',data:actuel,borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,.1)',fill:true,tension:.3,pointBackgroundColor:'#dc2626'},{label:'Objectif ZAN',data:zan,borderColor:'#2d6a4f',borderDash:[6,3],backgroundColor:'transparent',tension:.3,pointRadius:3,pointBackgroundColor:'#2d6a4f'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}},y:{title:{display:true,text:'Ha artificialisés cumulés',font:{size:11}},ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}}}}});
+</style>
 </head>
+
 <body>
-  <h1>Ça marche 🎉</h1>
-  <p>Si tu vois cette page, GitHub Pages est bien configuré.</p>
+
+<!-- ton contenu HTML ici -->
+
 </body>
 </html>
+
+new Chart(document.getElementById('chartRadar'),{type:'radar',data:{labels:['Mobilité durable','Mixité logements','Biodiversité','Agriculture','Ressource eau','Gouvernance'],datasets:[{label:'Corronsac (2024)',data:[12,18,38,52,60,45],borderColor:'#e07b39',backgroundColor:'rgba(224,123,57,.2)',pointBackgroundColor:'#e07b39'},{label:'Objectif 2040',data:[55,55,70,75,75,70],borderColor:'#2d6a4f',backgroundColor:'rgba(45,106,79,.12)',borderDash:[6,3],pointBackgroundColor:'#2d6a4f'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:100,ticks:{backdropColor:'transparent',font:{size:9},stepSize:25},pointLabels:{font:{size:11}}}}}});
+</script>
+
