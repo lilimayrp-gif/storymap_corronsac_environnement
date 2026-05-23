@@ -1,4 +1,12 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+
+
+/* ton CSS ici */
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
@@ -590,6 +598,15 @@ const years=['2021','2023','2025','2027','2030','2035','2040','2050'];
 const actuel=[0,18,36,54,81,126,171,261];
 const zan=[0,9,15,20,27,30,32,32];
 new Chart(document.getElementById('chartZAN'),{type:'line',data:{labels:years,datasets:[{label:'Trajectoire actuelle',data:actuel,borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,.1)',fill:true,tension:.3,pointBackgroundColor:'#dc2626'},{label:'Objectif ZAN',data:zan,borderColor:'#2d6a4f',borderDash:[6,3],backgroundColor:'transparent',tension:.3,pointRadius:3,pointBackgroundColor:'#2d6a4f'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}},y:{title:{display:true,text:'Ha artificialisés cumulés',font:{size:11}},ticks:{font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}}}}});
+</style>
+</head>
+
+<body>
+
+<!-- ton contenu HTML ici -->
+
+</body>
+</html>
 
 new Chart(document.getElementById('chartRadar'),{type:'radar',data:{labels:['Mobilité durable','Mixité logements','Biodiversité','Agriculture','Ressource eau','Gouvernance'],datasets:[{label:'Corronsac (2024)',data:[12,18,38,52,60,45],borderColor:'#e07b39',backgroundColor:'rgba(224,123,57,.2)',pointBackgroundColor:'#e07b39'},{label:'Objectif 2040',data:[55,55,70,75,75,70],borderColor:'#2d6a4f',backgroundColor:'rgba(45,106,79,.12)',borderDash:[6,3],pointBackgroundColor:'#2d6a4f'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:100,ticks:{backdropColor:'transparent',font:{size:9},stepSize:25},pointLabels:{font:{size:11}}}}}});
 </script>
