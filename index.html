@@ -126,6 +126,143 @@
 </div>
 
 <!-- ============================
+     SECTION OCCUPATION DU SOL
+============================= -->
+<div class="section" id="sec-occsol">
+  <h2>Occupation du sol</h2>
+  <div class="divider"></div>
+
+  <p>
+    Évolution de l’urbanisation entre 2000 et 2020, pression foncière et
+    artificialisation des sols.
+  </p>
+
+  <div id="mapOccSol"></div>
+
+  <h3 style="margin-top:40px;">Évolution des surfaces (2000 → 2020)</h3>
+  <div style="width:100%;max-width:600px;height:320px;">
+    <canvas id="chartOccSol"></canvas>
+  </div>
+</div>
+
+<!-- ============================
+     SECTION RISQUES
+============================= -->
+<div class="section" id="sec-risques">
+  <h2>Risques et vulnérabilités</h2>
+  <div class="divider"></div>
+
+  <p>
+    Analyse des risques naturels et anthropiques : inondations, retrait-gonflement
+    des argiles, ruissellement, zones humides et continuités écologiques.
+  </p>
+
+  <h3>Émissions carbone du territoire</h3>
+  <div style="width:100%;max-width:420px;height:300px;">
+    <canvas id="chartCarbone"></canvas>
+  </div>
+
+  <h3 style="margin-top:40px;">Typologie du logement</h3>
+  <div style="width:100%;max-width:420px;height:300px;">
+    <canvas id="chartLogement"></canvas>
+  </div>
+</div>
+
+<!-- ============================
+     SECTION DASHBOARD
+============================= -->
+<div class="section" id="sec-dashboard">
+  <h2>Dashboard – Indicateurs clés</h2>
+  <div class="divider"></div>
+
+  <p>
+    Synthèse des trajectoires d’artificialisation, objectifs ZAN, biodiversité et
+    gouvernance territoriale.
+  </p>
+
+  <h3>Trajectoire ZAN</h3>
+  <div style="width:100%;max-width:650px;height:340px;">
+    <canvas id="chartZAN"></canvas>
+  </div>
+
+  <h3 style="margin-top:40px;">Radar des enjeux</h3>
+  <div style="width:100%;max-width:550px;height:380px;">
+    <canvas id="chartRadar"></canvas>
+  </div>
+</div>
+
+<!-- ============================
+     SECTION SCÉNARIOS
+============================= -->
+<div class="section" id="sec-scenarios">
+  <h2>Scénarios prospectifs</h2>
+  <div class="divider"></div>
+
+  <p>
+    Trois trajectoires possibles pour Corronsac à horizon 2040, selon les choix
+    d’aménagement, de sobriété foncière et de préservation écologique.
+  </p>
+
+  <h3>Scénario 1 – Tendanciel</h3>
+  <p>
+    Poursuite du rythme actuel d’urbanisation, pression accrue sur les terres
+    agricoles, fragmentation écologique et augmentation des risques liés au
+    ruissellement.
+  </p>
+
+  <h3>Scénario 2 – Modéré</h3>
+  <p>
+    Urbanisation plus compacte, renforcement des continuités écologiques,
+    maîtrise de l’imperméabilisation et meilleure gestion des eaux pluviales.
+  </p>
+
+  <h3>Scénario 3 – Ambitieux</h3>
+  <p>
+    Objectif ZAN atteint, renaturation, corridors écologiques restaurés,
+    agriculture protégée, mobilité durable renforcée et gouvernance territoriale
+    optimisée.
+  </p>
+</div>
+
+<!-- ============================
+     SECTION PRÉCONISATIONS
+============================= -->
+<div class="section" id="sec-preco">
+  <h2>Préconisations stratégiques</h2>
+  <div class="divider"></div>
+
+  <p>
+    Recommandations opérationnelles pour accompagner Corronsac vers une
+    trajectoire durable, résiliente et compatible avec les objectifs ZAN.
+  </p>
+
+  <div class="preconisation">
+    <div class="prec-num">1</div>
+    <p>Limiter l’étalement urbain et favoriser la densification douce.</p>
+  </div>
+
+  <div class="preconisation">
+    <div class="prec-num">2</div>
+    <p>Protéger les terres agricoles et les continuités écologiques.</p>
+  </div>
+
+  <div class="preconisation">
+    <div class="prec-num">3</div>
+    <p>Renforcer la gestion des eaux pluviales et réduire le ruissellement.</p>
+  </div>
+
+  <div class="preconisation">
+    <div class="prec-num">4</div>
+    <p>Développer la mobilité durable et les alternatives à la voiture.</p>
+  </div>
+
+  <div class="preconisation">
+    <div class="prec-num">5</div>
+    <p>Mettre en place une gouvernance territoriale collaborative.</p>
+  </div>
+</div>
+
+<!-- ============================
      SCRIPTS – NAVIGATION
 ============================= -->
 <script>
