@@ -264,13 +264,14 @@
     <div class="stat-card sky"><div class="lbl">Taux imperméabilisation</div><div class="val">23%</div><div class="trend">Contre 14% en 2000</div></div>
   </div>
 
-  <h3>Cartographie du changement d'usage des sols</h3>
+ <div class="map-block">
+  <div class="map-header">
+    <span class="map-title">Évolution de l'artificialisation (2000–2020)</span>
+    <span class="map-year">Source : Corine Land Cover / IGN-BDTOPO</span>
+  </div>
 
-  <div class="map-block">
-    <div class="map-header">
-      <span class="map-title">Évolution de l'artificialisation (2000–2020)</span>
-      <span class="map-year">Source : Corine Land Cover / IGN-BDTOPO</span>
-    </div>
+  <div id="mapOccSol" style="width:100%;height:350px;border-radius:8px;overflow:hidden;"></div>
+</div>
 
     <div class="map-area">
       <!-- ============================
@@ -536,6 +537,121 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 
 <script>
+  /* -----------------------------
+   CARTE INTERACTIVE OCCUPATION DU SOL
+   Style ArcGIS Pro (fond gris)
+----------------------------- */
+
+// Création de la carte
+const map = L.map('mapOccSol', {
+  zoomControl: true,
+  attributionControl: true
+}).setView([43.51, 1.53], 13); // centre approximatif Corronsac
+
+// Fond type ArcGIS Light Gray
+L.tileLayer(
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+  {
+    attribution: '© Esri, HERE, Garmin, OpenStreetMap contributors',
+    maxZoom: 19
+  }
+).addTo(map);
+
+// --- Couches simplifiées (géométrie illustrative) ---
+
+// Urbanisation 2000
+L.polygon([
+  [43.512, 1.525],
+  [43.512, 1.535],
+  [43.507, 1.535],
+  [43.507, 1.525]
+], {
+  color: '#b08968',
+  weight: 1,
+  fillColor: '#d4b896',
+  fillOpacity: 0.7
+}).bindPopup('<strong>Tissu urbain 2000</strong>').addTo(map);
+
+// Urbanisation 2000–2010
+L.polygon([
+  [43.515, 1.525],
+  [43.515, 1.54],
+  [43.51, 1.54],
+  [43.51, 1.525]
+], {
+  color: '#c05621',
+  weight: 1,
+  fillColor: '#d97706',
+  fillOpacity: 0.55
+}).bindPopup('<strong>Urbanisation 2000–2010</strong>').addTo(map);
+
+// Urbanisation 2010–2020
+L.polygon([
+  [43.512, 1.535],
+  [43.512, 1.55],
+  [43.507, 1.55],
+  [43.507, 1.535]
+], {
+  color: '#b91c1c',
+  weight: 1,
+  fillColor: '#dc2626',
+  fillOpacity: 0.5
+}).bindPopup('<strong>Urbanisation 2010–2020</strong>').addTo(map);
+
+// Zone humide
+L.circle([43.505, 1.545], {
+  radius: 250,
+  color: '#2563eb',
+  weight: 2,
+  dashArray: '4,3',
+  fillColor: '#93c5fd',
+  fillOpacity: 0.4
+}).bindPopup('<strong>Zone humide</strong><br>⚠ Menacée').addTo(map);
+
+// Terres agricoles à risque
+L.rectangle([
+  [43.518, 1.54],
+  [43.503, 1.56]
+], {
+  color: '#dc2626',
+  weight: 1,
+  dashArray: '6,4',
+  fillOpacity: 0
+}).bindPopup('<strong>Terres agricoles à risque</strong>').addTo(map);
+
+// Cours d’eau
+L.polyline([
+  [43.502, 1.52],
+  [43.505, 1.53],
+  [43.508, 1.54],
+  [43.51, 1.55],
+  [43.513, 1.56]
+], {
+  color: '#4ea8de',
+  weight: 3
+}).bindPopup('<strong>Saudrune</strong>').addTo(map);
+
+// Légende
+const legend = L.control({ position: 'bottomright' });
+legend.onAdd = function () {
+  const div = L.DomUtil.create('div', 'info legend');
+  div.style.background = 'rgba(255,255,255,0.9)';
+  div.style.padding = '6px 8px';
+  div.style.borderRadius = '6px';
+  div.style.fontSize = '11px';
+
+  div.innerHTML = `
+    <div style="font-weight:600;margin-bottom:4px;">Occupation du sol</div>
+    <div><span style="display:inline-block;width:12px;height:12px;background:#d4b896;border:1px solid #b08968;margin-right:4px;"></span>Tissu urbain 2000</div>
+    <div><span style="display:inline-block;width:12px;height:12px;background:#d97706;border:1px solid #c05621;margin-right:4px;"></span>Urbanisation 2000–2010</div>
+    <div><span style="display:inline-block;width:12px;height:12px;background:#dc2626;border:1px solid #b91c1c;margin-right:4px;"></span>Urbanisation 2010–2020</div>
+    <div><span style="display:inline-block;width:12px;height:12px;background:#93c5fd;border:1px solid #2563eb;margin-right:4px;"></span>Zone humide</div>
+    <div><span style="display:inline-block;width:12px;height:12px;border:1px dashed #dc2626;margin-right:4px;"></span>Terres agricoles à risque</div>
+  `;
+  return div;
+};
+legend.addTo(map);
+
 /* -----------------------------
    Navigation entre sections
 ----------------------------- */
